@@ -1,7 +1,10 @@
 import React from 'react';
 import CardForm from './CardForm';
+import { useNavigate } from 'react-router';
 
 export default function CreateCard() {
+	const navigate = useNavigate();
+
 	async function saveCard(form) {
 		const newCard = {...form};
 
@@ -16,6 +19,8 @@ export default function CreateCard() {
 			window.alert(error);
 			return;
 		});
+
+		navigate('/admin/cardlist')
 	}
 	
 	return (

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 export default function CardForm(props) {
 	const [form, setForm] = useState({
+		language: props.card ? props.card.language : "",
+		level: props.card ? props.card.level : "",
 		targetWord: props.card ? props.card.targetWord : "",
 		englishWord: props.card ? props.card.englishWord : "",
 		wordClass: props.card ? props.card.wordClass : "",
@@ -24,6 +26,26 @@ export default function CardForm(props) {
 	
 	return (
 		<form onSubmit={ _createOrUpdate }>
+			<label>
+				Language:
+				<input 
+					value={ form.language }
+					onChange={(e) => updateForm({ language: e.target.value })}
+					type="text" 
+					required 
+				/>
+			</label>
+
+			<label>
+				Level:
+				<input 
+					value={ form.level }
+					onChange={(e) => updateForm({ level: e.target.value })}
+					type="text" 
+					required 
+				/>
+			</label>
+			
 			<label>
 				Target word:
 				<input 
