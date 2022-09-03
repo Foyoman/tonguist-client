@@ -45,7 +45,7 @@ export default function Learn() {
 
 						<br />
 						<br />
-						<div class='card-bottom'>
+						<div className='card-bottom'>
 							<p>{ card ? card.englishWord : "loading..." }</p>
 							<p>{ card ? card.englishPhrase : "loading..." }</p>
 						</div>
