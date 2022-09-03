@@ -5,7 +5,7 @@ import '../style.scss'
 export default function Register() {
 	const navigate = useNavigate();
 
-	const SERVER_URL = `http://localhost:6969/register`;
+	const SERVER_URL = `http://localhost:6969/user/register`;
 	
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');

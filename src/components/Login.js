@@ -5,7 +5,7 @@ import '../style.scss'
 export default function Login() {
 	const navigate = useNavigate();
 	
-	const SERVER_URL = `http://localhost:6969/login`;
+	const SERVER_URL = `http://localhost:6969/user/login`;
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
