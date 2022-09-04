@@ -26,6 +26,8 @@ export default function Dashboard() {
 		} else {
 			alert(data.error)
 		}
+
+		console.log(data.cards)
 	}
 	
 	useEffect(() => {
@@ -52,7 +54,7 @@ export default function Dashboard() {
 
 			const allCards = await response.json();
 			setAllCards(allCards);
-			setSampleCard(allCards[0]);
+			setSampleCard(_.sample(allCards));
 		}
 
 		getCards();
@@ -62,6 +64,8 @@ export default function Dashboard() {
 // debugger
 	async function updateCards(e) {
 		e.preventDefault()
+
+		await populateCards();
 		
 		const filteredCards = _.reject(cards, (card) => {
 			return card.cardId === sampleCard._id;
@@ -76,6 +80,7 @@ export default function Dashboard() {
 			body: JSON.stringify({
 				cards: [...filteredCards, { 
 					'cardId': sampleCard._id,
+					'targetWord': sampleCard.targetWord,
 					'cardProgress': Number(cardProgress)
 				} ],
 			}),
@@ -83,11 +88,13 @@ export default function Dashboard() {
 
 		const data = await req.json()
 		if (data.status === 'ok') {
-			setCards(cardProgress)
+			// setCards(cardProgress)
 			setCardProgress(0)
 		} else {
 			alert(data.error)
 		}
+
+		setSampleCard(_.sample(allCards));
 	}
 	// debugger
 	return (
