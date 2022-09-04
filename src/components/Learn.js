@@ -6,6 +6,7 @@ export default function Learn() {
 	const [cards, setCards] = useState([]);
 	const [card, setCard] = useState({});
 	const [previousCards, setPreviousCards] = useState([]); // TODO: add previous cards to previousCards, to prevent users from seeing the same cards in short sequence
+	// 
 
 	const SERVER_URL = 'http://localhost:6969/cards/'
 
