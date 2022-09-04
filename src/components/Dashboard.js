@@ -113,7 +113,7 @@ export default function Dashboard() {
 		await populateCards();
 
 	}
-	debugger
+	
 	return (
 		<div>
 			<h2>Dashboard</h2>
