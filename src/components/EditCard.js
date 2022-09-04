@@ -47,7 +47,7 @@ export default function EditCard() {
 			},
 		});
 
-		navigate("/admin");
+		navigate("/admin/cardlist");
 	}
 	
 	return (

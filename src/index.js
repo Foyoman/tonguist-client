@@ -7,6 +7,9 @@ import Learn from './components/Learn';
 import CreateCard from './components/CreateCard';
 import CardList from './components/CardList';
 import EditCard from './components/EditCard';
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
@@ -21,7 +24,10 @@ const routes = (
           <Route path="/admin/cardlist" element={ <CardList /> } />
           <Route path="/admin/edit/:id" element={ <EditCard /> } />
         </Route>
-        <Route path="/learn" element={ <Learn />} />
+        <Route path="/learn" element={ <Learn /> } />
+        <Route path="/register" element={ <Register /> } />
+        <Route path="/login" element={ <Login /> } />
+        <Route path="/dashboard" element={ <Dashboard /> } />
       </Route>
     </Routes>
   </Router>
