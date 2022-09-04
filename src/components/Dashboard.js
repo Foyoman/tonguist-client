@@ -5,11 +5,12 @@ import _ from 'lodash';
 
 export default function Dashboard() {
 	const navigate = useNavigate();
-	const [name, setName] = useState();
-	const [cards, setCards] = useState();
+	const [name, setName] = useState('');
+	const [cards, setCards] = useState([]);
 	const [cardProgress, setCardProgress] = useState(0);
-	const [allCards, setAllCards] = useState();
-	const [sampleCard, setSampleCard] = useState();
+	const [allCards, setAllCards] = useState([]);
+	const [sampleCard, setSampleCard] = useState({});
+	const [input, setInput] = useState('');
 
 	const SERVER_URL = `http://localhost:6969/`;
 
@@ -65,11 +66,24 @@ export default function Dashboard() {
 	async function updateCards(e) {
 		e.preventDefault()
 
-		await populateCards();
 		
 		const filteredCards = _.reject(cards, (card) => {
 			return card.cardId === sampleCard._id;
 		})
+
+		const selectedCard = (
+			(_.filter(cards, (card) => {
+				return card.cardId === sampleCard._id;
+			}))[0]
+		)
+		
+		let updatedProgress;
+
+		if (input === sampleCard.targetWord ) {
+			updatedProgress = selectedCard.cardProgress + 1;
+		} else {
+			updatedProgress = 1;
+		}
 
 		const req = await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
@@ -81,7 +95,7 @@ export default function Dashboard() {
 				cards: [...filteredCards, { 
 					'cardId': sampleCard._id,
 					'targetWord': sampleCard.targetWord,
-					'cardProgress': Number(cardProgress)
+					'cardProgress': updatedProgress
 				} ],
 			}),
 		})
@@ -95,22 +109,26 @@ export default function Dashboard() {
 		}
 
 		setSampleCard(_.sample(allCards));
+
+		await populateCards();
+
 	}
-	// debugger
+	debugger
 	return (
 		<div>
 			<h2>Dashboard</h2>
 			<h3>{ name }</h3>
 			{/* <h4>{ sampleCard.targetWord }</h4> */}
 			<h3>{ sampleCard ? sampleCard.targetWord : "" }</h3>
+			
 			<form onSubmit={ updateCards }>
 				<input 
-					type='number'
-					placeholder='card progress' 
-					value={ cardProgress }
-					onChange={ (e) => setCardProgress(e.target.value) }
+					value={ input } 
+					onChange={ (e) => setInput(e.target.value) }
+					placeholder='input placeholder' 
 				/>
-				<input type="submit" value="Add to user's cards" />
+
+				<button type="submit">Update card progress</button>
 			</form>
 		</div>
 	)
