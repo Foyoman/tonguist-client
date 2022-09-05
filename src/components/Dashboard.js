@@ -111,9 +111,9 @@ export default function Dashboard() {
 		setSampleCard(_.sample(allCards));
 
 		await populateCards();
-
+		setInput('');
 	}
-	
+
 	return (
 		<div>
 			<h2>Dashboard</h2>
