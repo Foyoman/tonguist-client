@@ -6,7 +6,17 @@ export default function CreateCard() {
 	const navigate = useNavigate();
 
 	async function saveCard(form) {
-		const newCard = {...form};
+		const newCard = {
+			language: form.language,
+			level: form.level,
+			targetWord: form.targetWord,
+			englishWord: form.englishWord,
+			wordClass: form.wordClass.split(' '),
+			phraseStart: form.phraseStart,
+			phraseEnd: form.phraseEnd,
+			englishPhrase: form.englishPhrase
+		};
+
 
 		await fetch("http://localhost:6969/cards", {
 			method: "POST",

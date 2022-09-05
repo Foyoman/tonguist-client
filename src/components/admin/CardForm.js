@@ -6,7 +6,7 @@ export default function CardForm(props) {
 		level: props.card ? props.card.level : "",
 		targetWord: props.card ? props.card.targetWord : "",
 		englishWord: props.card ? props.card.englishWord : "",
-		wordClass: props.card ? props.card.wordClass : "",
+		wordClass: props.card ? props.card.wordClass.join(' ') : "",
 		phraseStart: props.card ? props.card.phraseStart : "",
 		phraseEnd: props.card ? props.card.phraseEnd : "",
 		englishPhrase: props.card ? props.card.englishPhrase : ""

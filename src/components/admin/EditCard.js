@@ -37,7 +37,16 @@ export default function EditCard() {
 	}, [params.id, navigate]);
 
 	async function updateCard(form) {
-		const editedCard = {...form};
+		const editedCard = {
+			language: form.language,
+			level: form.level,
+			targetWord: form.targetWord,
+			englishWord: form.englishWord,
+			wordClass: form.wordClass.split(' '),
+			phraseStart: form.phraseStart,
+			phraseEnd: form.phraseEnd,
+			englishPhrase: form.englishPhrase
+		};
 
 		await fetch(SERVER_URL, {
 			method: "PUT",

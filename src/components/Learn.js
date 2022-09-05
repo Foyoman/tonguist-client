@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import '../style.scss';
-import { first } from 'underscore';
+import { Card, Divider, Box } from '@mui/material';
+
+import BoyIcon from '@mui/icons-material/Boy';
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -88,7 +90,7 @@ export default function Learn() {
 		
 		let updatedProgress;
 
-		if (input === sampleCard.targetWord) {
+		if (input.toLowerCase() === sampleCard.targetWord) {
 			updatedProgress = selectedCard.cardProgress + 1;
 			const newCard = _.sample(allCards);
 			setSampleCard(newCard);
@@ -134,27 +136,32 @@ export default function Learn() {
 	return (
 		<div>
 			<h3 style={{ textAlign: 'center' }}>Learn</h3>
-			<div className='container card'>
+			<Card className='container learn-card'>
 				<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
 				<form onSubmit={ updateCards } style={{ display: 'inline' }}>
 					<input 
 						value={ input } 
 						onChange={ (e) => setInput(e.target.value) }
 						placeholder={ !firstAttempt ? sampleCard.targetWord : "" }
-						style={{ display: 'inline', fontSize: '20px', height: '1.5em', width: `${ inputWidth }em`, textAlign: 'center' }}
+						style={{ display: 'inline', fontSize: '20px', height: '1.5em', width: `${ inputWidth }em`, textAlign: 'center', color: 'white' }}
 					/>
 
 					<button type="submit" style={{ display: 'none' }}>Update card progress</button>
 				</form>
 				<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
+				<br />
+				<Card className='card-bottom grey-text text-darken-1' variant='dark' style={{ marginBottom: '0.5em', display: 'inline-flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.2em 0.5em' }}>
+					{ sampleCard.wordClass.includes('masculine') ? <BoyIcon style={{ margin: '0' }} /> : "" }
+					{ sampleCard.wordClass.join(', ') }
+				</Card>
 
-				<div className='divider'></div>
+				<Divider />
 
 				<div className='card-bottom'>
 					<p className='grey-text text-darken-1'>{ sampleCard ? sampleCard.englishWord : "" }</p>
 					<p className='grey-text text-darken-1'>{ sampleCard ? sampleCard.englishPhrase : "" }</p>
 				</div>
-			</div>
+			</Card>
 		</div>
 	)
 }
