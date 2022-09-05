@@ -1,3 +1,13 @@
-label {
-	display: block !important;
+.card-bottom {
+	font-size: 12px;
+}
+
+.card-bottom p {
+	margin: 0;
+}
+
+.card {
+	display: relative;
+	margin: 0 auto;
+	padding: 0.5em 1em;
 }

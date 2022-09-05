@@ -2,37 +2,41 @@ import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken'; 
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import Navbar from './layout/Navbar';
 
 function App() {
-  const [user, setUser] = useState();
+  const [currentUser, setCurrentUser] = useState();
   const [name, setName] = useState('');
 	const navigate = useNavigate();
 	
 	useEffect(() => {
 	  const token = localStorage.getItem('token')
 		if (token) {
-			setUser(jwt.decode(token));
-			if (!user) {
-				localStorage.removeItem('token');
-			} else {
-				setName(user.name);
-			}
+      const user = jwt.decode(token);
+			setCurrentUser(user);
+      if (user) { 
+        setName(user.name) 
+      }
 		}	
-	}, [])
+	}, [localStorage.getItem('token')]);
 
   const handleLogOut = () => {
     localStorage.removeItem('token');
+    setCurrentUser('');
+    setName('');
     navigate('');
   }
 	
   return (
     <div className="App">
+      <Navbar />
+      <Outlet/>
       <div style={{ display: 'flex' }}>
         Nav coming soon |
         <Link to='/'>Home</Link> {" "} |
         <Link to='/admin'>Admin</Link> {" "} |
         <Link to='/learn'>Learn</Link> {" "} |
-        { !user ? 
+        { !currentUser ? 
           <span>
             <Link to='/register'>Register</Link> {" "} |
             <Link to='/login'>Login</Link> {" "} |
@@ -40,14 +44,14 @@ function App() {
         : 
           <span>
             <Link to='/dashboard'>Dashboard</Link> {" "} |
-            <Link to='/' onClick={ handleLogOut }>Log Out</Link>
+            <Link to='/' onClick={ handleLogOut }>Log Out</Link> {" "} |
             { name }
           </span>
         }
-      </div>
-      <Outlet/>
+      </div> 
     </div>
   );
 }
 
 export default App;
+

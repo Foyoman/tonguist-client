@@ -5,9 +5,9 @@ import _ from 'lodash';
 
 export default function Dashboard() {
 	const navigate = useNavigate();
+
 	const [name, setName] = useState('');
 	const [cards, setCards] = useState([]);
-	const [cardProgress, setCardProgress] = useState(0);
 	const [allCards, setAllCards] = useState([]);
 	const [sampleCard, setSampleCard] = useState({});
 	const [input, setInput] = useState('');
@@ -32,17 +32,20 @@ export default function Dashboard() {
 	}
 	
 	useEffect(() => {
+		if (!localStorage.getItem('token')) {
+			navigate('/login')
+		}
 	  const token = localStorage.getItem('token')
 		if (token) {
 			const user = jwt.decode(token)
 			if (!user) {
-				// localStorage.removeItem('token')
-				navigate('/login')
+				// localStorage.removeItem('token');
+				navigate('/login');
 			} else {
 				setName(user.name);
 				populateCards();
 			}
-		}	
+		}
 
 		async function getCards() {
 			const response = await fetch(SERVER_URL + 'cards');
@@ -61,7 +64,7 @@ export default function Dashboard() {
 		getCards();
 
 		return;
-	}, [])
+	}, [localStorage.getItem('token')])
 // debugger
 	async function updateCards(e) {
 		e.preventDefault()
@@ -79,7 +82,7 @@ export default function Dashboard() {
 		
 		let updatedProgress;
 
-		if (input === sampleCard.targetWord ) {
+		if (input === sampleCard.targetWord) {
 			updatedProgress = selectedCard.cardProgress + 1;
 		} else {
 			updatedProgress = 1;
@@ -103,7 +106,7 @@ export default function Dashboard() {
 		const data = await req.json()
 		if (data.status === 'ok') {
 			// setCards(cardProgress)
-			setCardProgress(0)
+			console.log('success')
 		} else {
 			alert(data.error)
 		}

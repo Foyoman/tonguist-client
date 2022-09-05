@@ -1,18 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import { Card } from 'react-bootstrap';
-import _ from 'underscore';
+import React, { useEffect, useState } from 'react';
+import jwt from 'jsonwebtoken'; 
+import { useNavigate } from 'react-router';
+import _ from 'lodash';
+import '../style.scss';
 
 export default function Learn() {
+	const navigate = useNavigate();
+
 	const [cards, setCards] = useState([]);
-	const [card, setCard] = useState({});
-	const [previousCards, setPreviousCards] = useState([]); // TODO: add previous cards to previousCards, to prevent users from seeing the same cards in short sequence
-	// 
+	const [allCards, setAllCards] = useState([]);
+	const [sampleCard, setSampleCard] = useState({});
+	const [input, setInput] = useState('');
 
-	const SERVER_URL = 'http://localhost:6969/cards/'
+	const [inputWidth, setInputWidth] = useState('');
 
+	const SERVER_URL = `http://localhost:6969/`;
+
+	async function populateCards() {
+		const req = await fetch(SERVER_URL + 'user/cards', {
+			headers: {
+				'x-access-token': localStorage.getItem('token'),
+			},
+		})
+
+		const data = await req.json()
+		if (data.status === 'ok') {
+			setCards(data.cards)
+		} else {
+			alert(data.error)
+		}
+
+		console.log(data.cards)
+	}
+	
 	useEffect(() => {
+		if (!localStorage.getItem('token')) {
+			navigate('/login')
+		}
+	  const token = localStorage.getItem('token')
+		if (token) {
+			const user = jwt.decode(token)
+			if (!user) {
+				// localStorage.removeItem('token');
+				navigate('/login');
+			} else {
+				populateCards();
+			}
+		}
+
 		async function getCards() {
-			const response = await fetch(SERVER_URL);
+			const response = await fetch(SERVER_URL + 'cards');
 
 			if (!response.ok) {
 				const message = `An error occurred: ${ response.statusText }`;
@@ -20,39 +57,96 @@ export default function Learn() {
 				return;
 			}
 
-			const cards = await response.json();
-			setCards(cards);
+			const allCards = await response.json();
+			setAllCards(allCards);
+			const sampleCard = _.sample(allCards);
+			setSampleCard(sampleCard);
+			setInputWidth(sampleCard.targetWord.length * 0.7);
 		}
 
-		getCards().then(() => setCard(_.sample(cards)));
+		getCards();
 
 		return;
-	}, [cards.length]);
+	}, [localStorage.getItem('token')])
+// debugger
+	async function updateCards(e) {
+		e.preventDefault()
+
+		
+		const filteredCards = _.reject(cards, (card) => {
+			return card.cardId === sampleCard._id;
+		})
+
+		const selectedCard = (
+			(_.filter(cards, (card) => {
+				return card.cardId === sampleCard._id;
+			}))[0]
+		)
+		
+		let updatedProgress;
+
+		if (input === sampleCard.targetWord) {
+			updatedProgress = selectedCard.cardProgress + 1;
+		} else {
+			updatedProgress = 1;
+		}
+
+		const req = await fetch(SERVER_URL + 'user/cards', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'x-access-token': localStorage.getItem('token'),
+			},
+			body: JSON.stringify({
+				cards: [...filteredCards, { 
+					'cardId': sampleCard._id,
+					'targetWord': sampleCard.targetWord,
+					'cardProgress': updatedProgress
+				} ],
+			}),
+		})
+
+		const data = await req.json()
+		if (data.status === 'ok') {
+			// setCards(cardProgress)
+			console.log('success')
+		} else {
+			alert(data.error)
+		}
+
+		const newCard = _.sample(allCards);
+		setSampleCard(newCard);
+		setInputWidth(newCard.targetWord.length * 0.7);
+
+		await populateCards();
+		setInput('');
+	}
 
 	return (
 		<div>
-			<h2>Learn</h2>
-			<div className='text-center' style={{ maxWidth: '600px', margin: '0 auto' }}>
-				<h3>Test card</h3>
-				<Card className='d-flex justify-content-center align-items-center'>
-					<Card.Body>
-						<p style={{ display: 'inline' }}>
-							{ card ? card.phraseStart : "loading..." }
-						</p>
-						<input type="text" />
-						<p style={{ display: 'inline' }}>
-							{ card ? card.phraseEnd : "loading..." }
-						</p>
+			<h3 style={{ textAlign: 'center' }}>Learn</h3>
+			<div className='container card'>
+				<p style={{ display: 'inline', fontSize: '16px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
+				<form onSubmit={ updateCards } style={{ display: 'inline' }}>
+					<input 
+						value={ input } 
+						onChange={ (e) => setInput(e.target.value) }
+						style={{ display: 'inline', fontSize: '16px', height: '1.5em', width: `${ inputWidth }em`, textAlign: 'center' }}
+					/>
 
-						<br />
-						<br />
-						<div className='card-bottom'>
-							<p>{ card ? card.englishWord : "loading..." }</p>
-							<p>{ card ? card.englishPhrase : "loading..." }</p>
-						</div>
-					</Card.Body>
-				</Card>
+					<button type="submit" style={{ display: 'none' }}>Update card progress</button>
+				</form>
+				<p style={{ display: 'inline', fontSize: '16px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
+
+				<div className='divider'></div>
+
+				<div className='card-bottom'>
+					<p className='grey-text text-darken-1'>{ sampleCard ? sampleCard.englishWord : "" }</p>
+					<p className='grey-text text-darken-1'>{ sampleCard ? sampleCard.englishPhrase : "" }</p>
+				</div>
 			</div>
 		</div>
 	)
 }
+
+
