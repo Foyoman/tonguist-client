@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import '../style.scss';
+import { first } from 'underscore';
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function Learn() {
 	const [allCards, setAllCards] = useState([]);
 	const [sampleCard, setSampleCard] = useState({});
 	const [input, setInput] = useState('');
+	const [firstAttempt, setFirstAttempt] = useState(true);
 
 	const [inputWidth, setInputWidth] = useState('');
 
@@ -70,8 +72,9 @@ export default function Learn() {
 	}, [localStorage.getItem('token')])
 // debugger
 	async function updateCards(e) {
-		e.preventDefault()
-
+		e.preventDefault();
+		setInput('');
+		setFirstAttempt(false);
 		
 		const filteredCards = _.reject(cards, (card) => {
 			return card.cardId === sampleCard._id;
@@ -87,8 +90,19 @@ export default function Learn() {
 
 		if (input === sampleCard.targetWord) {
 			updatedProgress = selectedCard.cardProgress + 1;
+			const newCard = _.sample(allCards);
+			setSampleCard(newCard);
+			setInputWidth(newCard.targetWord.length * 0.7);
+			setFirstAttempt(true);
+			await populateCards();
 		} else {
 			updatedProgress = 1;
+		}
+
+		
+
+		if (!firstAttempt) {
+			return;
 		}
 
 		const req = await fetch(SERVER_URL + 'user/cards', {
@@ -114,29 +128,25 @@ export default function Learn() {
 			alert(data.error)
 		}
 
-		const newCard = _.sample(allCards);
-		setSampleCard(newCard);
-		setInputWidth(newCard.targetWord.length * 0.7);
-
-		await populateCards();
-		setInput('');
+		
 	}
 
 	return (
 		<div>
 			<h3 style={{ textAlign: 'center' }}>Learn</h3>
 			<div className='container card'>
-				<p style={{ display: 'inline', fontSize: '16px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
+				<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
 				<form onSubmit={ updateCards } style={{ display: 'inline' }}>
 					<input 
 						value={ input } 
 						onChange={ (e) => setInput(e.target.value) }
-						style={{ display: 'inline', fontSize: '16px', height: '1.5em', width: `${ inputWidth }em`, textAlign: 'center' }}
+						placeholder={ !firstAttempt ? sampleCard.targetWord : "" }
+						style={{ display: 'inline', fontSize: '20px', height: '1.5em', width: `${ inputWidth }em`, textAlign: 'center' }}
 					/>
 
 					<button type="submit" style={{ display: 'none' }}>Update card progress</button>
 				</form>
-				<p style={{ display: 'inline', fontSize: '16px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
+				<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
 
 				<div className='divider'></div>
 

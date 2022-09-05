@@ -7,6 +7,7 @@ class Navbar extends Component {
       <div className="navbar-fixed">
         <nav className="z-depth-0">
           <div className="nav-wrapper white">
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons black-text text-darken-4">menu</i></a>
             <Link
               to="/"
               style={{
@@ -14,14 +15,17 @@ class Navbar extends Component {
               }}
               className="col s5 brand-logo center black-text"
             >
-              <i className="material-icons">code</i>
+              <i className="material-icons">translate</i>
               tonguist
             </Link>
+
           </div>
         </nav>
+        
       </div>
     );
   }
 }
 
 export default Navbar;
+

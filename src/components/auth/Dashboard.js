@@ -121,7 +121,6 @@ export default function Dashboard() {
 		<div>
 			<h2>Dashboard</h2>
 			<h3>{ name }</h3>
-			{/* <h4>{ sampleCard.targetWord }</h4> */}
 			<h3>{ sampleCard ? sampleCard.targetWord : "" }</h3>
 			
 			<form onSubmit={ updateCards }>

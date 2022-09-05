@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import '../../style.scss';
+
 class Landing extends Component {
   render() {
     return (
@@ -8,13 +10,11 @@ class Landing extends Component {
         <div className="row">
           <div className="col s12 center-align">
             <h4>
-              <b>Build</b> a login/auth app with the{" "}
-              <span style={{ fontFamily: "monospace" }}>MERN</span> stack from
-              scratch
+              <b>Learn</b> new languages smarter and faster with{" "}
+              <span style={{ fontFamily: "monospace" }}>tonguist</span>
             </h4>
             <p className="flow-text grey-text text-darken-1">
-              Create a (minimal) full-stack app with user authentication via
-              passport and JWTs
+              Learn the  words that you really need, and improve your vocabulary in as little as 30 minutes per day.
             </p>
             <br />
             <div className="col s6">
