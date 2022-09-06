@@ -1,5 +1,6 @@
 
 $correct: rgba(37, 154, 104, 0.2);
+$brighterCorrect: rgba(0, 255, 144, 0.8);
 
 .learn-card {
 	display: relative;
@@ -50,28 +51,43 @@ $correct: rgba(37, 154, 104, 0.2);
 
 #card-input {
 	background-color: rgba(24, 24, 24, 0.1);
-	border-top-right-radius: 0.3rem;
-	border-top-left-radius: 0.3rem;
+	border-top-right-radius: 0.2rem;
+	border-top-left-radius: 0.2rem;
 }
 
 #card-input:focus {
 	background-color: rgba(24, 24, 24, 0.5);
-	border-top-right-radius: 0.3rem;
-	border-top-left-radius: 0.3rem;
+	border-top-right-radius: 0.2rem;
+	border-top-left-radius: 0.2rem;
 	border-bottom: 1px solid white !important;
 	box-shadow: 0 1px 0 0 white;
 }
 
 #correct-input {
-	color: rgba(0, 255, 144, 0.8);
-	border-top-right-radius: 0.3rem;
-	border-top-left-radius: 0.3rem;
+	color: $brighterCorrect;
+	border-top-right-radius: 0.2rem;
+	border-top-left-radius: 0.2rem;
 	background-color: $correct;
 }
 
 #correct-input:focus {
 	border-bottom: 1px solid $correct !important;
 	box-shadow: 0 1px 0 0 $correct;
+}
+
+.card-status {
+	padding: 0;
+	margin: -7px 0 -10px 0.5em;
+	font-size: 12px;
+}
+
+#new-word {
+	@extend .card-status;
+	color: rgb(255, 148, 79);
+}
+
+#new-word-stripe {
+	background-color: rgb(255, 148, 79);
 }
 
 
@@ -92,6 +108,17 @@ $correct: rgba(37, 154, 104, 0.2);
 .checked {
 	background-color: rgb(2, 96, 110);
 }
+
+#finished-word {
+	@extend .card-status;
+	color: $brighterCorrect;
+}
+
+.finished-stripe {
+	background-color: $brighterCorrect;
+}
+
+
 
 @media only screen and (max-width: 600px) {
 	.mobile-width-100 {

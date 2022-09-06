@@ -21,7 +21,8 @@ export default function Learn() {
 	const [newCard, setNewCard] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const [readOnly, setReadOnly] = useState(false);
-	const [correct, setCorrect] = useState(false)
+	const [correct, setCorrect] = useState(false);
+	const [finishedCard, setFinishedCard] = useState(false);
 
 	const SERVER_URL = `http://localhost:6969/`;
 
@@ -35,7 +36,6 @@ export default function Learn() {
 		const data = await req.json()
 		if (data.status === 'ok') {
 			setCards(data.cards)
-			console.log(data.cards)
 		} else {
 			alert(data.error)
 		}
@@ -66,22 +66,40 @@ export default function Learn() {
 			}
 
 			const allCards = await response.json();
-			setAllCards(allCards);
+			// setAllCards(allCards);
 			const newCard = _.sample(allCards);
 			setSampleCard(newCard);
 			setInputWidth(newCard.targetWord.length * 0.7);
-			return [newCard, cards];
+			return [newCard, cards, allCards];
 		}
 
 		populateCards().then((cards) => getCards(cards).then((cardArray) => {
-			const [newCard, cards] = cardArray;
+			const [newCard, cards, allCards] = cardArray;
+
 			const selectCard = (
 				(_.filter(cards, (card) => {
 					return card.cardId === newCard._id;
 				}))[0]
 			)
+
+			const finishedCards = (
+				(_.reject(cards, (card) => {
+					return card.cardProgress < 5;
+				}))
+			)
+			const arrayOfFinishedCards = _.map(finishedCards, 'cardId')
+
+			const filteredCards = (
+				(_.reject(allCards, (card) => {
+					return arrayOfFinishedCards.includes(card._id)
+				}))
+			)
+
+			console.log(filteredCards);
+			setAllCards(filteredCards);
 			setSelectedCard(selectCard);
-			setProgress(selectCard.cardProgress);
+			setProgress(selectCard ? selectCard.cardProgress : 0);
+			
 			if (!selectCard) {
 				setNewCard(true);
 			} else {
@@ -92,7 +110,6 @@ export default function Learn() {
 		return;
 	}, [])
 	
-// debugger
 	async function updateCards(e) {
 		e.preventDefault();
 		setFirstAttempt(false);
@@ -101,6 +118,12 @@ export default function Learn() {
 			return card.cardId === sampleCard._id;
 		})
 
+		// const selectCard = (
+		// 	(_.filter(cards, (card) => {
+		// 		return card.cardId === newCard._id;
+		// 	}))[0]
+		// )
+		
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
@@ -109,8 +132,22 @@ export default function Learn() {
 				updatedProgress = selectedCard.cardProgress + 1;
 			}
 
-			const newCard = _.sample(allCards);
-			// setSampleCard(newCard);
+			const filteredCards = (
+				(_.reject(allCards, (card) => {
+					if (selectedCard) {
+						return card._id === selectedCard.cardId;
+					}
+				}))
+			)
+
+			if (updatedProgress >= 5) {
+				setFinishedCard(true);
+				console.log(filteredCards);
+				setAllCards(filteredCards);
+			}
+
+			const newCard = _.sample(filteredCards);
+
 			setReadOnly(true);
 			
 			if (firstAttempt) {
@@ -119,13 +156,19 @@ export default function Learn() {
 			}
 
 			setTimeout(() => {
-				console.log('hi')
-				setSampleCard(newCard);
-				setInputWidth(newCard.targetWord.length * 0.7);
-				setProgress(selectCard.cardProgress);
 				setReadOnly(false);
 				setCorrect(false);
 				setInput('');
+				setSampleCard(newCard);
+				setInputWidth(newCard.targetWord.length * 0.7);
+				setFinishedCard(false);
+				if (!selectCard) {
+					setNewCard(true);
+					setProgress(0);
+					return;
+				}
+				setNewCard(false);
+				setProgress(selectCard.cardProgress);
 			}, 3000)
 
 			const selectCard = (
@@ -136,11 +179,6 @@ export default function Learn() {
 
 			setSelectedCard(selectCard);
 			
-			if (!selectCard) {
-				setNewCard(true);
-			} else {
-				setNewCard(false);
-			}
 			setFirstAttempt(true);
 		} 
 
@@ -187,27 +225,18 @@ export default function Learn() {
 			<h3 style={{ textAlign: 'center' }}>Learn</h3>
 			<Card className='container learn-card'>
 				<span style={{ margin: '0', padding: '0', display: 'flex' }}>
-					{ newCard ? 
-						<span style={{ color: 'orange' }}>New Word!</span>
-						: 
-						<span className='stripes'>
-							{ progress >= 1 &&
-								<div className='stripe checked' /> || <div className='stripe' />
-							}
-							{ progress >= 2 &&
-								<div className='stripe checked' /> || <div className='stripe' />
-							}
-							{ progress >= 3 &&
-								<div className='stripe checked' /> || <div className='stripe' />
-							}
-							{ progress >= 4 &&
-								<div className='stripe checked' /> || <div className='stripe' />
-							}
-							{ progress >= 5 &&
-								<div className='stripe checked' /> || <div className='stripe' />
-							}
+					<span className='stripes'>
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 0 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 2 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 3 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 4 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 5 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+
+						<span className='card-status'>
+							{ newCard && <span className='' id='new-word'>New word</span> }
+							{ finishedCard && <span className='' id='finished-word'>Word completed</span> }
 						</span>
-					}
+					</span>
 				</span>
 				<div className='whole-phrase'>
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
