@@ -6,6 +6,7 @@ import '../style.scss';
 import { Card, Divider, Box } from '@mui/material';
 
 import BoyIcon from '@mui/icons-material/Boy';
+import GirlIcon from '@mui/icons-material/Girl';
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -151,8 +152,9 @@ export default function Learn() {
 				<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
 				<br />
 				<Card className='card-bottom grey-text text-darken-1' variant='dark' style={{ marginBottom: '0.5em', display: 'inline-flex', justifyContent: 'flex-start', alignItems: 'center', padding: '0.2em 0.5em' }}>
-					{ sampleCard.wordClass.includes('masculine') ? <BoyIcon style={{ margin: '0' }} /> : "" }
-					{ sampleCard.wordClass.join(', ') }
+					{ sampleCard.wordClass ? sampleCard.wordClass.includes('masculine') ? sampleCard.wordClass.includes('plural') ? <span><BoyIcon /><BoyIcon /><BoyIcon /></span> : <BoyIcon /> : "" : "" }
+					{ sampleCard.wordClass ? sampleCard.wordClass.includes('feminine') ? sampleCard.wordClass.includes('plural') ? <span><GirlIcon /><GirlIcon /><GirlIcon /></span> : <GirlIcon /> : "" : "" }
+					{ sampleCard.wordClass ? sampleCard.wordClass.join(', ') : "" }
 				</Card>
 
 				<Divider />
