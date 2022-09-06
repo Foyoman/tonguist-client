@@ -35,7 +35,7 @@ export default function CreateCard() {
 	
 	return (
 		<div>
-			<h2>Create</h2>
+			<h3 style={{ textAlign: 'center' }}>Create</h3>
 			<CardForm onSubmit={ saveCard } />
 		</div>
 	)

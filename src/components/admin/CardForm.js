@@ -22,7 +22,7 @@ export default function CardForm(props) {
 	function _createOrUpdate(e) {
 		e.preventDefault();
 		props.onSubmit(form);
-		setForm({ targetWord: "", englishWord: "", wordClass: "", phraseStart: "", phraseEnd: "", englishPhrase: "" });
+		setForm({ language: "", level: "", targetWord: "", englishWord: "", wordClass: "", phraseStart: "", phraseEnd: "", englishPhrase: "" });
 	}
 	
 	return (

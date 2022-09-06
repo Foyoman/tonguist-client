@@ -61,7 +61,7 @@ export default function EditCard() {
 	
 	return (
 		<div>
-			<h3>Edit Card</h3>
+			<h3 style={{ textAlign: 'center' }}>Edit Card</h3>
 			{ card && 
 				<CardForm
 					onSubmit={ updateCard }
