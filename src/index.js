@@ -11,7 +11,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/hub/Dashboard';
 import Landing from './components/layout/Landing';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -19,6 +19,7 @@ import '@fontsource/roboto/700.css';
 
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Hub from './components/hub/Hub';
+import Profile from './components/hub/Profile';
 
 const routes = (
   <Router>
@@ -35,6 +36,7 @@ const routes = (
         <Route path="/learn" element={ <Learn /> } />
         <Route element={<Hub />}>
           <Route path="/dashboard" element={ <Dashboard /> } />
+          <Route path="/profile" element={ <Profile /> } />
         </Route>
       </Route>
     </Routes>

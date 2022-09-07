@@ -263,14 +263,6 @@ export default function Learn() {
 			})
 		})
 
-		// const data = await req.json()
-		// if (data.status === 'ok') {
-		// 	// setCards(cardProgress)
-		// 	console.log('success')
-		// } else {
-		// 	alert(data.error)
-		// }
-
 		populateCards();
 		populateDates();
 		console.log('dates')
@@ -343,7 +335,7 @@ export default function Learn() {
 					<p className='grey-text text-darken-1 english-phrase'>{ sampleCard ? sampleCard.englishPhrase : "" }</p>
 				</div>
 				<span className='grey-text text-darken-1 card-count'>
-					{ cardCount > 50 ? cardCount - 50 : cardCount } / 50 
+					{ cardCount > 50 ? (cardCount - (Math.floor(cardCount / 50) * 50)) : cardCount } / 50 
 					{ cardCount > 50 && 
 						<span className='set-count'> / { Math.floor(cardCount / 50) }</span>
 					}

@@ -28,7 +28,7 @@ function App() {
     localStorage.removeItem('token');
     setCurrentUser('');
     setName('');
-    navigate('');
+    navigate('/');
   }
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -49,7 +49,7 @@ function App() {
       <div className="App">
         <Navbar />
         <Outlet/>
-        <div style={{ display: 'flex' }}>
+        {/* <div style={{ display: 'flex' }}>
           Nav coming soon |
           <Link to='/'>Home</Link> {" "} |
           <Link to='/admin'>Admin</Link> {" "} |
@@ -66,7 +66,7 @@ function App() {
               { name }
             </span>
           }
-        </div> 
+        </div>  */}
       </div>
     </ThemeProvider>
   );

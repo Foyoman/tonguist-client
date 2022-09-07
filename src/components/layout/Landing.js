@@ -10,13 +10,15 @@ const Landing = () => {
   
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      navigate('/learn')
+      navigate('/dashboard');
+      return;
     }
 	  const token = localStorage.getItem('token')
 		if (token) {
       const user = jwt.decode(token);
       if (user) { 
-        navigate('/learn')
+        navigate('/dashboard');
+        return;
       }
 		}	
 	}, [localStorage.getItem('token')]);

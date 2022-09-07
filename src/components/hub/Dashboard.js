@@ -4,22 +4,18 @@ import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 
 import '../../style.scss';
-import { Card, Button, Divider, Box, Checkbox, getDialogContentTextUtilityClass } from '@mui/material';
+import { Card, Button, Checkbox } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import { ContentPasteSearchOutlined } from '@mui/icons-material';
+import LinearProgress from '@mui/material/LinearProgress';
+import IconButton from '@mui/material';
 
 export default function Dashboard() {
 	const navigate = useNavigate();
 
-	const [currentUser, setCurrentUser] = useState('');
-  const [name, setName] = useState('');
-	const [todaysDate, setTodaysDate] = useState('');
-	const [allDates, setAllDates] = useState('');
-	const [todaysCount, setTodaysCount] = useState(false);
-	const [todaysDay, setTodaysDay] = useState('');
+	const [today, setToday] = useState('')
+	const [todaysProgress, setTodaysProgress] = useState(0);
 	const [yesterdaysCount, setYesterdaysCount] = useState(false);
 	const [yesterdaysDay, setYesterdaysDay] = useState('');
 	const [ereyesterdaysCount, setEreyesterdaysCount] = useState(false);
@@ -32,6 +28,8 @@ export default function Dashboard() {
 	const [fiveDaysAgosDay, setFiveDaysAgosDay] = useState('');
 	const [sixDaysAgosCount, setSixDaysAgosCount] = useState(false);
 	const [sixDaysAgosDay, setSixDaysAgosDay] = useState('');
+	const [aWeekAgosCount, setAWeekAgosCount] = useState(false);
+	const [aWeekAgosDay, setAWeekAgosDay] = useState('');
 
 	const SERVER_URL = `http://localhost:6969/`;
 	
@@ -42,16 +40,17 @@ export default function Dashboard() {
 			},
 		})
 
+		const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
 		const today = new Date();
+		setToday(weekdays[today.getDay()]);
 		const todaysDate = String(today).split(' ').slice(0, 4).join(' ');
-		setTodaysDate(todaysDate);
 		
 		const data = await req.json()
 
 		let todaysCardCount;
 		
 		if (data.status === 'ok') {
-			setAllDates(data.dates)
 			todaysCardCount = (
 				(_.filter(data.dates, (date) => {
 					return date.date === todaysDate;
@@ -60,8 +59,6 @@ export default function Dashboard() {
 		} else {
 			alert(data.error)
 		}
-		// console.log(todaysCardCount)
-		// console.log(data.dates)
 		return [todaysCardCount, data.dates];
 	}
 
@@ -88,14 +85,9 @@ export default function Dashboard() {
 		}	
 
 		populateDates().then((dates) => {
-			// console.log(dates)
 			const [todaysCount, allDates] = dates;
-			const todaysDay = todaysCount.date.split(' ')[0];
-			setTodaysDay(todaysDay);
 			
-			if (todaysCount.cardCount >= 50) {
-				setTodaysCount(true);
-			}
+			setTodaysProgress(todaysCount.cardCount);
 			
 			const yesterday = getPreviousDays(1);
 			const yesterdaysDay = yesterday.split(' ')[0];
@@ -183,26 +175,53 @@ export default function Dashboard() {
 				setSixDaysAgosCount(true);
 			};
 
+			const aWeekAgo = getPreviousDays(7);
+			const aWeekAgosDay = aWeekAgo.split(' ')[0];
+			setAWeekAgosDay(aWeekAgosDay);
+
+			const aWeekAgosCount = (
+				_.filter(allDates, (date) => {
+					return date.date === aWeekAgo;
+				})[0]
+			)
+
+			if (aWeekAgosCount && aWeekAgosCount >= 50) {
+				setAWeekAgosCount(true);
+			};
+
 		});
 	}, [localStorage.getItem('token')]);
 	
 	return (
 		<div className='dashboard'>
-			<Card>
-				<Card>select language</Card>
-				
-				<Button>continue learning</Button>
+			{/* <IconButton><IconFlagTR /></IconButton> */}
+			<Card className='dash-card'>
+				<Card className='inner-card'>select language</Card>
+				<Button id='continue-learning' href="/#/learn" color='secondary' variant='contained'>continue learning</Button>
 			</Card>
-			<Card>
-				Your progress
-				<Card></Card>
+			<Card className='dash-card'>
+				<p className='card-header'>Today's progress</p>
+				<p className='today'>{ today }</p>
+				<span>
+					{ todaysProgress > 50 ? todaysProgress - (Math.floor(todaysProgress / 50) * 50) : todaysProgress } / 50
+					{ todaysProgress > 50 && 
+						<span className='set-count-dash'> / { Math.floor(todaysProgress / 50)} set completed</span> 
+					}
+				</span>
+				<LinearProgress className='progress' color='secondary' variant="determinate" value={ todaysProgress * 2 } />
 			</Card>
-			<Card>
+			<Card className='dash-card'>
 				<div>
+					<p className='card-header'>Past week's progress</p>
 					<FormControl component="fieldset">
-						<p>Your week's progress</p>
-						<p>13 / 50 cards</p>
 						<FormGroup aria-label="position" row>
+							<FormControlLabel
+								value="bottom"
+								control={<Checkbox className={ aWeekAgosCount && 'checked' } disabled checked={ aWeekAgosCount } size='large'  />}
+								label={ aWeekAgosDay }
+								labelPlacement="bottom"
+								className='daily-checkbox'
+							/>
 							<FormControlLabel
 								value="bottom"
 								control={<Checkbox className={ sixDaysAgosCount && 'checked' } disabled checked={ sixDaysAgosCount } size='large' />}
@@ -245,18 +264,18 @@ export default function Dashboard() {
 								labelPlacement="bottom"
 								className='daily-checkbox'
 							/>
-							<FormControlLabel
+							{/* <FormControlLabel
 								value="bottom"
 								control={<Checkbox className={ todaysCount && 'checked' } disabled checked={ todaysCount } size='large'  />}
 								label={ todaysDay }
 								labelPlacement="bottom"
 								className='daily-checkbox'
-							/>
+							/> */}
 						</FormGroup>
 					</FormControl>
 				</div>
 			</Card>
-			<Card>
+			<Card className='dash-card'>
 				Today's goal
 			</Card>
 		</div>

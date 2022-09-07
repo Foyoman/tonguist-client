@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import CottageIcon from '@mui/icons-material/Cottage';
 
 
 class Navbar extends Component {
@@ -8,9 +9,8 @@ class Navbar extends Component {
       <div className="navbar-fixed">
         <nav className="z-depth-0">
           <div className="nav-wrapper black">
-            <a href="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons white-text text-darken-4">menu</i></a>
             <Link
-              to="/"
+              to="/dashboard"
               style={{
                 fontFamily: "monospace"
               }}

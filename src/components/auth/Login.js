@@ -30,7 +30,7 @@ export default function Login() {
 			// sessionStorage.setItem('token', data.user)
 			localStorage.setItem('token', data.user);
 			console.log('Login successful');
-			navigate('/learn');
+			navigate('/dashboard');
 		} else {
 			alert('Please check your username and password') // TODO: add this as an error message instead of an alert
 		}

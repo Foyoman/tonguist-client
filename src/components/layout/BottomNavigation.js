@@ -29,6 +29,7 @@ export default function LabelBottomNavigation() {
         icon={<StartIcon />}
       />
       <BottomNavigationAction
+				href="#/profile"
         label="Profile"
         value="profile"
         icon={<AccountCircleIcon />}
