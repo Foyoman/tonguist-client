@@ -28,7 +28,6 @@ export default function Learn() {
 	const [finishedCard, setFinishedCard] = useState(false);
 	const [allDates, setAllDates] = useState('');
 	const [todaysDate, setTodaysDate] = useState('');
-	const [todaysCardCount, setTodaysCardCount] = useState('');
 	const [cardCount, setCardCount] = useState(0);
 
 	const SERVER_URL = `http://localhost:6969/`;
@@ -70,7 +69,6 @@ export default function Learn() {
 				}))[0]
 			)
 			if (selectDate) { 
-				setTodaysCardCount(selectDate);
 				setCardCount(selectDate.cardCount);
 			}
 		} else {
@@ -342,7 +340,12 @@ export default function Learn() {
 					<p className='grey-text text-darken-1 english-word'>{ sampleCard ? sampleCard.englishWord : "" }</p>
 					<p className='grey-text text-darken-1 english-phrase'>{ sampleCard ? sampleCard.englishPhrase : "" }</p>
 				</div>
-				<span className='grey-text text-darken-1 card-count'>{ cardCount > 50 ? cardCount - 50 : cardCount } / 50</span>
+				<span className='grey-text text-darken-1 card-count'>
+					{ cardCount > 50 ? cardCount - 50 : cardCount } / 50 
+					{ cardCount > 50 && 
+						<span className='set-count'> / { Math.floor(cardCount / 50) }</span>
+					}
+				</span>
 				<LinearProgress className='progress' color='success' variant="determinate" value={ cardCount * 2 } />
 			</Card>
 		</div>
