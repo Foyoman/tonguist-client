@@ -4,7 +4,7 @@ $brighterCorrect: rgba(0, 255, 144, 0.8);
 
 .learn-card {
 	display: relative;
-	margin: 0 auto;
+	margin: 10vh auto 2em auto;
 	padding: 1.5em 2em 1.5em 2em;
 
 	.MuiButtonBase-root {
@@ -90,7 +90,15 @@ $brighterCorrect: rgba(0, 255, 144, 0.8);
 	background-color: rgb(255, 148, 79);
 }
 
+.card-count {
+	font-size: 12px;
+	display: flex;
+	justify-content: flex-end;
+}
 
+.progress {
+	margin: 0;
+}
 
 .stripes {
 	display: flex;

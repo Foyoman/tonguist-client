@@ -3,11 +3,13 @@ import jwt from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import '../style.scss';
-import { Card, Divider, Box, Checkbox } from '@mui/material';
+import { Card, Divider, Box, Checkbox, getDialogContentTextUtilityClass } from '@mui/material';
 
 import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
 import NeutralIcon from '@mui/icons-material/Man4';
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -24,6 +26,10 @@ export default function Learn() {
 	const [readOnly, setReadOnly] = useState(false);
 	const [correct, setCorrect] = useState(false);
 	const [finishedCard, setFinishedCard] = useState(false);
+	const [allDates, setAllDates] = useState('');
+	const [todaysDate, setTodaysDate] = useState('');
+	const [todaysCardCount, setTodaysCardCount] = useState('');
+	const [cardCount, setCardCount] = useState(0);
 
 	const SERVER_URL = `http://localhost:6969/`;
 
@@ -42,6 +48,38 @@ export default function Learn() {
 		}
 
 		return data.cards;
+	}
+
+	async function populateDates() {
+		const req = await fetch(SERVER_URL + 'user/dates', {
+			headers: {
+				'x-access-token': localStorage.getItem('token'),
+			},
+		})
+
+		const today = new Date();
+		const formattedDate = today.toISOString().split('T')[0];
+		setTodaysDate(formattedDate);
+
+		const data = await req.json()
+		if (data.status === 'ok') {
+			setAllDates(data.dates)
+			const selectDate = (
+				(_.filter(data.dates, (date) => {
+					return date.date === formattedDate;
+				}))[0]
+			)
+			if (selectDate) { 
+				setTodaysCardCount(selectDate);
+				setCardCount(selectDate.cardCount);
+			}
+		} else {
+			alert(data.error)
+		}
+
+		
+
+		return data.dates;
 	}
 	
 	useEffect(() => {
@@ -67,12 +105,13 @@ export default function Learn() {
 			}
 
 			const allCards = await response.json();
-			// setAllCards(allCards);
 			const newCard = _.sample(allCards);
 			setSampleCard(newCard);
 			setInputWidth(newCard.targetWord.length * 0.7);
 			return [newCard, cards, allCards];
 		}
+
+		populateDates();
 
 		populateCards().then((cards) => getCards(cards).then((cardArray) => {
 			const [newCard, cards, allCards] = cardArray;
@@ -119,12 +158,6 @@ export default function Learn() {
 			return card.cardId === sampleCard._id;
 		})
 
-		// const selectCard = (
-		// 	(_.filter(cards, (card) => {
-		// 		return card.cardId === newCard._id;
-		// 	}))[0]
-		// )
-		
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
@@ -192,6 +225,15 @@ export default function Learn() {
 			return;
 		}
 
+		const updatedCardCount = cardCount + 1;
+		// setCardCount(updatedCardCount)
+
+		
+		const filteredDates = _.reject(allDates, (date) => {
+			return date.date === todaysDate;
+		})
+
+
 		const req = await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
 			headers: {
@@ -205,17 +247,33 @@ export default function Learn() {
 					'cardProgress': updatedProgress
 				} ],
 			}),
+		}).then(() => {
+			fetch(SERVER_URL + 'user/dates', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'x-access-token': localStorage.getItem('token'),
+				},
+				body: JSON.stringify({
+					dates: [...filteredDates, {
+						'date': todaysDate,
+						'cardCount': updatedCardCount,
+					}]
+				})
+			})
 		})
 
-		const data = await req.json()
-		if (data.status === 'ok') {
-			// setCards(cardProgress)
-			console.log('success')
-		} else {
-			alert(data.error)
-		}
+		// const data = await req.json()
+		// if (data.status === 'ok') {
+		// 	// setCards(cardProgress)
+		// 	console.log('success')
+		// } else {
+		// 	alert(data.error)
+		// }
 
 		populateCards();
+		populateDates();
+		console.log('dates')
 		
 	}
 
@@ -223,7 +281,6 @@ export default function Learn() {
 
 	return (
 		<div>
-			<h3 style={{ textAlign: 'center' }}>Learn</h3>
 			<Card className='container learn-card'>
 				<span style={{ margin: '0', padding: '0', display: 'flex' }}>
 					<span className='stripes'>
@@ -285,6 +342,8 @@ export default function Learn() {
 					<p className='grey-text text-darken-1 english-word'>{ sampleCard ? sampleCard.englishWord : "" }</p>
 					<p className='grey-text text-darken-1 english-phrase'>{ sampleCard ? sampleCard.englishPhrase : "" }</p>
 				</div>
+				<span className='grey-text text-darken-1 card-count'>{ cardCount > 50 ? cardCount - 50 : cardCount } / 50</span>
+				<LinearProgress className='progress' color='success' variant="determinate" value={ cardCount * 2 } />
 			</Card>
 		</div>
 	)
