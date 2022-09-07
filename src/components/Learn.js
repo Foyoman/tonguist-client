@@ -162,8 +162,12 @@ export default function Learn() {
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
 		if (input.toLowerCase() === noDiacritics || input.toLowerCase() === sampleCard.targetWord) {
-			if (selectedCard) {
-				updatedProgress = selectedCard.cardProgress + 1;
+			if (firstAttempt) {
+				setCorrect(true);
+				setProgress(progress + 1);
+				if (selectedCard) {
+					updatedProgress = progress + 1;
+				}
 			}
 
 			const filteredCards = (
@@ -184,10 +188,6 @@ export default function Learn() {
 
 			setReadOnly(true);
 			
-			if (firstAttempt) {
-				setCorrect(true);
-				setProgress(progress + 1);
-			}
 
 			setTimeout(() => {
 				setReadOnly(false);
@@ -340,7 +340,7 @@ export default function Learn() {
 						<span className='set-count'> / { Math.floor(cardCount / 50) }</span>
 					}
 				</span>
-				<LinearProgress className='progress' color='success' variant="determinate" value={ cardCount * 2 } />
+				<LinearProgress className='progress' color='success' variant="determinate" value={ (cardCount - (Math.floor(cardCount / 50) * 50)) * 2 } />
 			</Card>
 		</div>
 	)

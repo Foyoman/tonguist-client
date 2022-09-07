@@ -205,10 +205,10 @@ export default function Dashboard() {
 				<span>
 					{ todaysProgress > 50 ? todaysProgress - (Math.floor(todaysProgress / 50) * 50) : todaysProgress } / 50
 					{ todaysProgress > 50 && 
-						<span className='set-count-dash'> / { Math.floor(todaysProgress / 50)} set completed</span> 
+						<span className='set-count-dash'> / { Math.floor(todaysProgress / 50) } set{ Math.floor(todaysProgress / 50) > 1 && 's' } completed</span> 
 					}
 				</span>
-				<LinearProgress className='progress' color='secondary' variant="determinate" value={ todaysProgress * 2 } />
+				<LinearProgress className='progress' color='secondary' variant="determinate" value={ (todaysProgress - (Math.floor(todaysProgress / 50) * 50)) * 2 } />
 			</Card>
 			<Card className='dash-card'>
 				<div>
@@ -264,13 +264,6 @@ export default function Dashboard() {
 								labelPlacement="bottom"
 								className='daily-checkbox'
 							/>
-							{/* <FormControlLabel
-								value="bottom"
-								control={<Checkbox className={ todaysCount && 'checked' } disabled checked={ todaysCount } size='large'  />}
-								label={ todaysDay }
-								labelPlacement="bottom"
-								className='daily-checkbox'
-							/> */}
 						</FormGroup>
 					</FormControl>
 				</div>
