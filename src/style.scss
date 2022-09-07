@@ -118,7 +118,23 @@ $brighterCorrect: rgba(0, 255, 144, 0.8);
 	background-color: $brighterCorrect;
 }
 
+.icons {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
 
+.boy-icons path {
+	color: darkslategrey;
+}
+
+.girl-icons path {
+	color: darksalmon;
+}
+
+.neutral-icons svg {
+	color: #ffd667;
+}
 
 @media only screen and (max-width: 600px) {
 	.mobile-width-100 {

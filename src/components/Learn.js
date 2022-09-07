@@ -7,6 +7,7 @@ import { Card, Divider, Box, Checkbox } from '@mui/material';
 
 import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
+import NeutralIcon from '@mui/icons-material/Man4';
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -127,7 +128,7 @@ export default function Learn() {
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-		if (input.toLowerCase() === noDiacritics) {
+		if (input.toLowerCase() === noDiacritics || input.toLowerCase() === sampleCard.targetWord) {
 			if (selectedCard) {
 				updatedProgress = selectedCard.cardProgress + 1;
 			}
@@ -227,10 +228,10 @@ export default function Learn() {
 				<span style={{ margin: '0', padding: '0', display: 'flex' }}>
 					<span className='stripes'>
 						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 0 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
-						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 2 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
-						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 3 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
-						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 4 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
-						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 5 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 2 && 'checked' }` } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 3 && 'checked' }` } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 4 && 'checked' }` } />
+						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 5 && 'checked' }` } />
 
 						<span className='card-status'>
 							{ newCard && <span className='' id='new-word'>New word</span> }
@@ -258,16 +259,24 @@ export default function Learn() {
 				<br />
 				<Card className='card-bottom grey-text text-darken-1 word-class' variant='dark'>
 					{ sampleCard.wordClass ? sampleCard.wordClass.includes('masculine') ? sampleCard.wordClass.includes('plural') ? 
-						<span><BoyIcon /><BoyIcon /><BoyIcon /></span> 
+						<span className='boy-icons icons'><BoyIcon /><BoyIcon /><BoyIcon /></span> 
 						: 
-						<BoyIcon /> 
+						<span className='boy-icons icons'><BoyIcon /></span>
 					: "" : "" }
+
 					{ sampleCard.wordClass ? sampleCard.wordClass.includes('feminine') ? sampleCard.wordClass.includes('plural') ? 
-						<span><GirlIcon /><GirlIcon /><GirlIcon /></span> 
+						<span className='girl-icons icons'><GirlIcon /><GirlIcon /><GirlIcon /></span> 
 						: 
-						<GirlIcon /> 
+						<span className='girl-icons icons'><GirlIcon /></span>
 					: "" : "" }
-					{ sampleCard.wordClass ? sampleCard.wordClass.join(', ') : "" }
+					
+					{ sampleCard.wordClass ? sampleCard.wordClass.includes('neutral') ? sampleCard.wordClass.includes('plural') ? 
+						<span className='neutral-icons icons'><NeutralIcon /><NeutralIcon /><NeutralIcon /></span> 
+						: 
+						<span className='neutral-icons icons'><NeutralIcon /></span>
+					: "" : "" }
+
+					<span>{ sampleCard.wordClass ? sampleCard.wordClass.join(', ') : "" }</span>
 				</Card>
 
 				<Divider />
