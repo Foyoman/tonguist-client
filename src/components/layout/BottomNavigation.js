@@ -1,0 +1,38 @@
+import * as React from 'react';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import '../../style.scss';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CottageIcon from '@mui/icons-material/Cottage';
+import StartIcon from '@mui/icons-material/Start';
+
+
+export default function LabelBottomNavigation() {
+  const [value, setValue] = React.useState('recents');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <BottomNavigation sx={{ width: '100%', height: '70px' }} value={value} onChange={handleChange} className='bottom-navigation no-display-mobile'>
+      <BottomNavigationAction
+				href="#/dashboard"
+        label="Home"
+        value="home"
+        icon={<CottageIcon />}
+      />
+      <BottomNavigationAction
+				href="#/learn"
+        label="Learn"
+        value="learn"
+        icon={<StartIcon />}
+      />
+      <BottomNavigationAction
+        label="Profile"
+        value="profile"
+        icon={<AccountCircleIcon />}
+      />
+    </BottomNavigation>
+  );
+}

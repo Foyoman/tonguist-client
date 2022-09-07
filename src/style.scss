@@ -163,16 +163,48 @@ $brighterCorrect: rgba(0, 255, 144, 0.8);
 		div .MuiFormControl-root .MuiFormGroup-root {
 			.MuiFormControlLabel-root {
 				margin: 0;
-				width: (100% / 7)
+				width: (100% / 7);
+				
+				.checked {
+					color: #ce93d8;
+				}
 			}
 		}
 	}
+}
+
+button:focus {
+	background-color: inherit;
+}
+
+.MuiBottomNavigation-root {
+	.MuiButtonBase-root {
+		background-color: black;
+		svg {
+			font-size: 32px;
+		}
+	}
+	.MuiCircularProgress-root {
+		position: absolute;
+		bottom: 50%;
+	}
+}
+
+.bottom-navigation {
+	position: fixed;
+	bottom: 0;
 }
 
 @media only screen and (max-width: 600px) {
 	.mobile-width-100 {
 		width: 100% !important;
 		margin: 0 !important;
+	}
+}
+
+@media only screen and (min-width: 500px) {
+	.no-display-mobile {
+		display: none !important;
 	}
 }
 

@@ -57,7 +57,7 @@ export default function Learn() {
 		})
 
 		const today = new Date();
-		const formattedDate = today.toISOString().split('T')[0];
+		const formattedDate = String(today).split(' ').slice(0, 4).join(' ');
 		setTodaysDate(formattedDate);
 
 		const data = await req.json()
@@ -82,7 +82,8 @@ export default function Learn() {
 	
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
-			navigate('/login')
+			navigate('/login');
+			return;
 		}
 
 	  const token = localStorage.getItem('token')
@@ -90,6 +91,7 @@ export default function Learn() {
 			const user = jwt.decode(token)
 			if (!user) {
 				navigate('/login');
+				return;
 			}
 		}
 
@@ -146,7 +148,7 @@ export default function Learn() {
 		}))
 
 		return;
-	}, [])
+	}, [localStorage.getItem('token')])
 	
 	async function updateCards(e) {
 		e.preventDefault();
@@ -201,7 +203,7 @@ export default function Learn() {
 				}
 				setNewCard(false);
 				setProgress(selectCard.cardProgress);
-			}, 3000)
+			}, 400)
 
 			const selectCard = (
 				(_.filter(cards, (card) => {
