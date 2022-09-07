@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import CottageIcon from '@mui/icons-material/Cottage';
-
+import '../../style.scss';
 
 class Navbar extends Component {
   render() {

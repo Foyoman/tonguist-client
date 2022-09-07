@@ -20,6 +20,8 @@ import '@fontsource/roboto/700.css';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Hub from './components/hub/Hub';
 import Profile from './components/hub/Profile';
+import './style.scss'
+
 
 const routes = (
   <Router>

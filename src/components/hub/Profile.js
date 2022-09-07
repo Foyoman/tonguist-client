@@ -12,10 +12,8 @@ export default function Profile() {
 
 	return (
 		<div class='profile'>
-			<div>
-				<Card>Profile</Card>
-			</div>
-			<Button onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
+			<h3><strong>Profile</strong></h3>
+			<Button style={{ fontSize: '16px' }} onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
 		</div>
 	)
 }

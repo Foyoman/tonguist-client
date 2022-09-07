@@ -2,6 +2,17 @@ $correct: rgba(37, 154, 104, 0.2);
 $brighterCorrect: rgba(0, 255, 144, 0.8);
 $purp: #ce93d8;
 
+// html, .navbar-fixed > * {
+// 	max-width: 500px;
+// 	margin: 0 auto;
+// }
+
+@media only screen and (min-width: 500px) {
+	.no-display-mobile {
+		display: none !important;
+	}
+}
+
 .learn-card {
 	display: relative;
 	margin: 10vh auto 2em auto;
@@ -159,6 +170,14 @@ $purp: #ce93d8;
 	}
 	
 	.dash-card {
+		.MuiButtonGroup-root {
+			margin-bottom: 1em;
+		}
+		.MuiButtonGroup-root, .MuiButtonGroup-root > * {
+			background-color: #121212;
+			color: inherit;
+			border-color: #121212 !important;
+		}
 		.card-header {
 			font-size: 24px;
 			margin-top: -0.4em;
@@ -225,6 +244,12 @@ button:focus {
 .bottom-navigation {
 	position: fixed;
 	bottom: 0;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+.Mui-selected > * {
+	color: $purp;
 }
 
 .log-out {
@@ -242,11 +267,7 @@ button:focus {
 	}
 }
 
-@media only screen and (min-width: 500px) {
-	.no-display-mobile {
-		display: none !important;
-	}
-}
+
 
 form {
 	padding: 1em;

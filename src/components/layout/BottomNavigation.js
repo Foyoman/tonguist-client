@@ -4,7 +4,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import '../../style.scss';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CottageIcon from '@mui/icons-material/Cottage';
-import StartIcon from '@mui/icons-material/Start';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 
 
 export default function LabelBottomNavigation() {
@@ -26,7 +26,7 @@ export default function LabelBottomNavigation() {
 				href="#/learn"
         label="Learn"
         value="learn"
-        icon={<StartIcon />}
+        icon={<PlayCircleFilledWhiteIcon />}
       />
       <BottomNavigationAction
 				href="#/profile"

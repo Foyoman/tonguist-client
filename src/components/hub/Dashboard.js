@@ -9,12 +9,22 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import LinearProgress from '@mui/material/LinearProgress';
-import IconButton from '@mui/material';
+
+
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
 
 export default function Dashboard() {
 	const navigate = useNavigate();
 
-	const [today, setToday] = useState('')
+	const [name, setName] = useState('');
+	const [today, setToday] = useState('');
 	const [todaysProgress, setTodaysProgress] = useState(0);
 	const [yesterdaysCount, setYesterdaysCount] = useState(false);
 	const [yesterdaysDay, setYesterdaysDay] = useState('');
@@ -78,8 +88,11 @@ export default function Dashboard() {
 	  const token = localStorage.getItem('token')
 		if (token) {
       const user = jwt.decode(token);
+      if (user) { 
+        setName(user.name) 
+      }
       if (!user) { 
-        navigate('/login')
+        navigate('/login');
 				return;
       }
 		}	
@@ -87,7 +100,7 @@ export default function Dashboard() {
 		populateDates().then((dates) => {
 			const [todaysCount, allDates] = dates;
 			
-			setTodaysProgress(todaysCount.cardCount);
+			setTodaysProgress(todaysCount && todaysCount.cardCount);
 			
 			const yesterday = getPreviousDays(1);
 			const yesterdaysDay = yesterday.split(' ')[0];
@@ -191,28 +204,109 @@ export default function Dashboard() {
 
 		});
 	}, [localStorage.getItem('token')]);
+
+
+	const options = ['🇪🇸 Spanish', '🇫🇷 French coming soon', '🇩🇪 German coming soon'];
+
+
+	const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const handleClick = () => {
+    console.info(`You clicked ${options[selectedIndex]}`);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setOpen(false);
+  };
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
 	
 	return (
 		<div className='dashboard'>
-			{/* <IconButton><IconFlagTR /></IconButton> */}
+			<h4 style={{ margin: '0', textAlign: 'center' }}><strong>Welcome back, { name }</strong></h4>
 			<Card className='dash-card'>
-				<Card className='inner-card'>select language</Card>
+				<ButtonGroup style={{ width: '100%' }} variant="contained" ref={anchorRef} aria-label="split button">
+					<Button style={{ width: '100%' }} onClick={handleClick}>{options[selectedIndex]}</Button>
+					<Button
+						size="small"
+						aria-controls={open ? 'split-button-menu' : undefined}
+						aria-expanded={open ? 'true' : undefined}
+						aria-label="select language"
+						aria-haspopup="menu"
+						onClick={handleToggle}
+					>
+						<ArrowDropDownIcon />
+					</Button>
+				</ButtonGroup>
+				<Popper
+					sx={{
+						zIndex: 1,
+					}}
+					open={open}
+					anchorEl={anchorRef.current}
+					role={undefined}
+					transition
+					disablePortal
+				>
+					{({ TransitionProps, placement }) => (
+						<Grow
+							{...TransitionProps}
+							style={{
+								transformOrigin:
+									placement === 'bottom' ? 'center top' : 'center bottom',
+							}}
+						>
+							<Paper>
+								<ClickAwayListener onClickAway={handleClose}>
+									<MenuList id="split-button-menu" autoFocusItem>
+										{options.map((option, index) => (
+											<MenuItem
+												key={option}
+												disabled={index === 2 || index === 1}
+												selected={index === selectedIndex}
+												onClick={(event) => handleMenuItemClick(event, index)}
+											>
+												{option}
+											</MenuItem>
+										))}
+									</MenuList>
+								</ClickAwayListener>
+							</Paper>
+						</Grow>
+					)}
+				</Popper>
+				<br />
 				<Button id='continue-learning' href="/#/learn" color='secondary' variant='contained'>continue learning</Button>
 			</Card>
 			<Card className='dash-card'>
 				<p className='card-header'>Today's progress</p>
+				<p className='grey-text text-darken-1'>Complete 50 cards to complete a set and achieve your daily goal.</p>
 				<p className='today'>{ today }</p>
 				<span>
-					{ todaysProgress > 50 ? todaysProgress - (Math.floor(todaysProgress / 50) * 50) : todaysProgress } / 50
+					{ todaysProgress ? todaysProgress > 50 ? todaysProgress - (Math.floor(todaysProgress / 50) * 50) : todaysProgress : '0' } / 50
 					{ todaysProgress > 50 && 
 						<span className='set-count-dash'> / { Math.floor(todaysProgress / 50) } set{ Math.floor(todaysProgress / 50) > 1 && 's' } completed</span> 
 					}
 				</span>
-				<LinearProgress className='progress' color='secondary' variant="determinate" value={ (todaysProgress - (Math.floor(todaysProgress / 50) * 50)) * 2 } />
+				<LinearProgress style={{ marginTop: '2px' }} className='progress' color='secondary' variant="determinate" value={ (todaysProgress - (Math.floor(todaysProgress / 50) * 50)) * 2 } />
 			</Card>
 			<Card className='dash-card'>
 				<div>
 					<p className='card-header'>Past week's progress</p>
+					<p className='grey-text text-darken-1'>For best results, try to learn every day. 50 cards would be ideal, but even 10 cards on tough days can help create a healthy learning habit.</p>
 					<FormControl component="fieldset">
 						<FormGroup aria-label="position" row>
 							<FormControlLabel
@@ -267,9 +361,6 @@ export default function Dashboard() {
 						</FormGroup>
 					</FormControl>
 				</div>
-			</Card>
-			<Card className='dash-card'>
-				Today's goal
 			</Card>
 		</div>
 	)
