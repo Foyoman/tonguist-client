@@ -45,24 +45,6 @@ function App() {
       <div className="App">
         <Navbar />
         <Outlet />
-        {/* <div style={{ display: 'flex' }}>
-          Nav coming soon |
-          <Link to='/'>Home</Link> {" "} |
-          <Link to='/admin'>Admin</Link> {" "} |
-          <Link to='/learn'>Learn</Link> {" "} |
-          { !currentUser ? 
-            <span>
-              <Link to='/register'>Register</Link> {" "} |
-              <Link to='/login'>Login</Link> {" "} |
-            </span>
-          : 
-            <span>
-              <Link to='/dashboard'>Dashboard</Link> {" "} |
-              <Link to='/' onClick={ handleLogOut }>Log Out</Link> {" "} |
-              { name }
-            </span>
-          }
-        </div>  */}
       </div>
     </ThemeProvider>
   );

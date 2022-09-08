@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
-import Home from './components/Home';
 import Admin from './components/admin/Admin';
 import Learn from './components/hub/Learn';
 import CreateCard from './components/admin/CreateCard';

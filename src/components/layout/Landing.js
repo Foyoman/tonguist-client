@@ -24,7 +24,7 @@ const Landing = () => {
 	}, [localStorage.getItem('token')]);
   
   return (
-    <div style={{ height: "75vh" }} className="landing container wrapper">
+    <div style={{ height: "75vh" }} className="landing container valign-wrapper">
       <div className="row">
         <div className="col s12 center-align">
           <h4>
