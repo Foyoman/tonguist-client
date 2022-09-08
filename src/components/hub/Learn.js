@@ -3,13 +3,12 @@ import jwt from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
 import '../../style.scss';
-import { Card, Divider, Box, Checkbox, getDialogContentTextUtilityClass } from '@mui/material';
+import { Card, Divider } from '@mui/material';
 
 import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
 import NeutralIcon from '@mui/icons-material/Man4';
 import LinearProgress from '@mui/material/LinearProgress';
-import { ContentPasteSearchOutlined } from '@mui/icons-material';
 
 
 export default function Learn() {
@@ -27,7 +26,6 @@ export default function Learn() {
 	const [readOnly, setReadOnly] = useState(false);
 	const [correct, setCorrect] = useState(false);
 	const [finishedCard, setFinishedCard] = useState(false);
-	const [allDates, setAllDates] = useState('');
 	const [todaysDate, setTodaysDate] = useState('');
 	const [cardCount, setCardCount] = useState(0);
 	const [language, setLanguage] = useState('');
@@ -57,8 +55,6 @@ export default function Learn() {
 				})
 			)
 
-			setAllDates(languageFilteredDates);
-			
 			const selectDate = (
 				_.filter(languageFilteredDates, (date) => {
 					return date.date === formattedDate;
