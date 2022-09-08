@@ -34,7 +34,7 @@ export default function Learn() {
 	const [allLangCards, setAllLangCards] = useState([]);
 	const [allLangDates, setAllLangDates] = useState([]);
 
-	const SERVER_URL = `http://localhost:6969/`;
+	const SERVER_URL = `https://tonguist.herokuapp.com/`;
 
 	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
@@ -291,7 +291,6 @@ export default function Learn() {
 		
 		const filteredDates = (
 			_.reject(allLangDates, (date) => {
-				console.log(date.date, todaysDate)
 				return date.date === todaysDate && date.language === language;
 			})
 		)

@@ -47,7 +47,7 @@ export default function Dashboard() {
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState('');
 
-	const SERVER_URL = `http://localhost:6969/`;
+	const SERVER_URL = `https://tonguist.herokuapp.com/`;
 	
 	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
@@ -263,6 +263,8 @@ export default function Dashboard() {
 		} else {
 			alert(data.error)
 		}
+
+		window.location.reload(false);
 	}
 
 	const options = ['🇪🇸 Spanish', '🇫🇷 French', '🇩🇪 German coming soon'];
@@ -277,7 +279,6 @@ export default function Dashboard() {
 		updateLanguage(selectedLanguage);
     setSelectedIndex(index);
     setOpen(false);
-		window.location.reload(false);
   };
 
   const handleToggle = () => {
