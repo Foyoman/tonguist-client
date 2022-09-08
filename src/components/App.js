@@ -9,27 +9,23 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState('');
-  const [name, setName] = useState('');
+  const [user, setUser] = useState('');
 	const navigate = useNavigate();
 	
 	useEffect(() => {
 	  const token = localStorage.getItem('token')
 		if (token) {
       const user = jwt.decode(token);
-			setCurrentUser(user);
-      if (user) { 
-        setName(user.name) 
-      }
+			setUser(user);
 		}	
 	}, [localStorage.getItem('token')]);
 
-  const handleLogOut = () => {
-    localStorage.removeItem('token');
-    setCurrentUser('');
-    setName('');
-    navigate('/');
-  }
+  // const handleLogOut = () => {
+  //   localStorage.removeItem('token');
+  //   setUser('');
+  //   setName('');
+  //   navigate('/');
+  // }
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -48,7 +44,7 @@ function App() {
       <CssBaseline />
       <div className="App">
         <Navbar />
-        <Outlet/>
+        <Outlet />
         {/* <div style={{ display: 'flex' }}>
           Nav coming soon |
           <Link to='/'>Home</Link> {" "} |

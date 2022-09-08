@@ -61,6 +61,7 @@ export default function Register() {
 						</div>
 						<div className="input-field col s12">
 						<input 
+							maxLength={ 16 }
 							value={ email }
 							onChange={(e) => setEmail(e.target.value)}
 							type="email" 

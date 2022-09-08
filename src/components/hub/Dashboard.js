@@ -41,9 +41,15 @@ export default function Dashboard() {
 	const [aWeekAgosCount, setAWeekAgosCount] = useState(false);
 	const [aWeekAgosDay, setAWeekAgosDay] = useState('');
 
+	const [language, setLanguage] = useState('');
+
+	const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const [selectedIndex, setSelectedIndex] = React.useState('');
+
 	const SERVER_URL = `http://localhost:6969/`;
 	
-	async function populateDates() {
+	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
 			headers: {
 				'x-access-token': localStorage.getItem('token'),
@@ -57,19 +63,24 @@ export default function Dashboard() {
 		const todaysDate = String(today).split(' ').slice(0, 4).join(' ');
 		
 		const data = await req.json()
+		const dates = (
+			_.filter(data.dates, (date) => {
+				return date.language === language;
+			})
+		)
 
 		let todaysCardCount;
 		
 		if (data.status === 'ok') {
 			todaysCardCount = (
-				(_.filter(data.dates, (date) => {
+				(_.filter(dates, (date) => {
 					return date.date === todaysDate;
 				}))[0]
 			)
 		} else {
 			alert(data.error)
 		}
-		return [todaysCardCount, data.dates];
+		return [todaysCardCount, dates];
 	}
 
 	function getPreviousDays(n, date = new Date()) {
@@ -89,7 +100,8 @@ export default function Dashboard() {
 		if (token) {
       const user = jwt.decode(token);
       if (user) { 
-        setName(user.name) 
+				console.log(user)
+        setName(user.name);
       }
       if (!user) { 
         navigate('/login');
@@ -97,7 +109,38 @@ export default function Dashboard() {
       }
 		}	
 
-		populateDates().then((dates) => {
+		async function getLanguage() {
+			const response = await fetch(SERVER_URL + 'user/language', {
+				headers: {
+					'x-access-token': localStorage.getItem('token'),
+				},
+			});
+
+			if (!response.ok) {
+				const message = `An error occurred: ${ response.statusText }`;
+				window.alert(message);
+				return;
+			}
+
+			const { language } = await response.json();
+
+			setLanguage(language);
+
+			let i;
+			if (language === 'spanish') {
+				i = 0
+			} else {
+				i = 1;
+			}
+
+			setSelectedIndex(i);
+
+			return language;
+		}
+
+		
+
+		getLanguage().then((language) => populateDates(language).then((dates) => {
 			const [todaysCount, allDates] = dates;
 			
 			setTodaysProgress(todaysCount && todaysCount.cardCount);
@@ -112,9 +155,7 @@ export default function Dashboard() {
 				})[0]
 			)
 
-			console.log(yesterdaysCount)
-
-			if (yesterdaysCount.cardCount >= 50) {
+			if (yesterdaysCount && yesterdaysCount.cardCount >= 50) {
 				setYesterdaysCount(true);
 			};
 
@@ -202,24 +243,42 @@ export default function Dashboard() {
 				setAWeekAgosCount(true);
 			};
 
+		}));
+	}, [language]);
+
+	async function updateLanguage(updatedLanguage) {
+		const req = await fetch(SERVER_URL + 'user/language', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'x-access-token': localStorage.getItem('token'),
+			},
+			body: JSON.stringify({
+				language: updatedLanguage
+			})
 		});
-	}, [localStorage.getItem('token')]);
 
+		const data = await req.json()
+		if (data.status === 'ok') {
+			console.log('success')
+		} else {
+			alert(data.error)
+		}
+	}
 
-	const options = ['🇪🇸 Spanish', '🇫🇷 French coming soon', '🇩🇪 German coming soon'];
-
-
-	const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+	const options = ['🇪🇸 Spanish', '🇫🇷 French', '🇩🇪 German coming soon'];
 
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
   };
 
   const handleMenuItemClick = (event, index) => {
+		const selectedLanguage = options[index].split(' ')[1].toLowerCase();
+		setLanguage(selectedLanguage);
+		updateLanguage(selectedLanguage);
     setSelectedIndex(index);
     setOpen(false);
+		window.location.reload(false);
   };
 
   const handleToggle = () => {
@@ -236,12 +295,24 @@ export default function Dashboard() {
 	
 	return (
 		<div className='dashboard'>
-			<h4 style={{ margin: '0', textAlign: 'center' }}><strong>Welcome back, { name }</strong></h4>
+			<h3 style={{ margin: '0', textAlign: 'center' }}>
+				<strong>Welcome back, { name }</strong>
+			</h3>
 			<Card className='dash-card'>
-				<ButtonGroup style={{ width: '100%' }} variant="contained" ref={anchorRef} aria-label="split button">
-					<Button style={{ width: '100%' }} onClick={handleClick}>{options[selectedIndex]}</Button>
+				<ButtonGroup 
+					style={{ width: '100%' }} 
+					variant="contained" 
+					ref={anchorRef} 
+					aria-label="split button"
+				>
+					<Button 
+						style={{ width: '100%' }} 
+						onClick={ handleClick }
+					>
+						{options[selectedIndex]}
+					</Button>
 					<Button
-						size="small"
+						size="large"
 						aria-controls={open ? 'split-button-menu' : undefined}
 						aria-expanded={open ? 'true' : undefined}
 						aria-label="select language"
@@ -275,7 +346,7 @@ export default function Dashboard() {
 										{options.map((option, index) => (
 											<MenuItem
 												key={option}
-												disabled={index === 2 || index === 1}
+												disabled={index === 2}
 												selected={index === selectedIndex}
 												onClick={(event) => handleMenuItemClick(event, index)}
 											>
@@ -293,7 +364,7 @@ export default function Dashboard() {
 			</Card>
 			<Card className='dash-card'>
 				<p className='card-header'>Today's progress</p>
-				<p className='grey-text text-darken-1'>Complete 50 cards to complete a set and achieve your daily goal.</p>
+				<p className='grey-text text-darken-1 dash-content'>Complete 50 cards to complete a set and achieve your daily goal.</p>
 				<p className='today'>{ today }</p>
 				<span>
 					{ todaysProgress ? todaysProgress > 50 ? todaysProgress - (Math.floor(todaysProgress / 50) * 50) : todaysProgress : '0' } / 50
@@ -306,7 +377,7 @@ export default function Dashboard() {
 			<Card className='dash-card'>
 				<div>
 					<p className='card-header'>Past week's progress</p>
-					<p className='grey-text text-darken-1'>For best results, try to learn every day. 50 cards would be ideal, but even 10 cards on tough days can help create a healthy learning habit.</p>
+					<p className='grey-text text-darken-1 dash-content'>For best results, try to learn every day. 50 cards would be ideal, but even 10 cards on tough days can help create a healthy learning habit.</p>
 					<FormControl component="fieldset">
 						<FormGroup aria-label="position" row>
 							<FormControlLabel

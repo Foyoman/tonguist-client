@@ -172,6 +172,9 @@ $purp: #ce93d8;
 	.dash-card {
 		.MuiButtonGroup-root {
 			margin-bottom: 1em;
+			.MuiButtonBase-root {
+				font-size: 20px;
+			}
 		}
 		.MuiButtonGroup-root, .MuiButtonGroup-root > * {
 			background-color: #121212;
@@ -179,10 +182,14 @@ $purp: #ce93d8;
 			border-color: #121212 !important;
 		}
 		.card-header {
-			font-size: 24px;
+			font-size: 28px;
 			margin-top: -0.4em;
 			font-weight: bold;
 			color: white;
+		}
+
+		.dash-content {
+			font-size: 15px;
 		}
 
 		.today {
@@ -199,6 +206,7 @@ $purp: #ce93d8;
 
 		#continue-learning {
 			width: 100%;
+			font-size: 18px;
 		}
 
 		.inner-card {
@@ -208,7 +216,6 @@ $purp: #ce93d8;
 		}
 
 		div .MuiFormControl-root {
-			
 
 			.MuiFormGroup-root {
 				.MuiFormControlLabel-root {

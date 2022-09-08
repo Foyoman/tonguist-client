@@ -9,6 +9,7 @@ import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
 import NeutralIcon from '@mui/icons-material/Man4';
 import LinearProgress from '@mui/material/LinearProgress';
+import { ContentPasteSearchOutlined } from '@mui/icons-material';
 
 
 export default function Learn() {
@@ -29,27 +30,11 @@ export default function Learn() {
 	const [allDates, setAllDates] = useState('');
 	const [todaysDate, setTodaysDate] = useState('');
 	const [cardCount, setCardCount] = useState(0);
+	const [language, setLanguage] = useState('');
 
 	const SERVER_URL = `http://localhost:6969/`;
 
-	async function populateCards() {
-		const req = await fetch(SERVER_URL + 'user/cards', {
-			headers: {
-				'x-access-token': localStorage.getItem('token'),
-			},
-		})
-
-		const data = await req.json()
-		if (data.status === 'ok') {
-			setCards(data.cards)
-		} else {
-			alert(data.error)
-		}
-
-		return data.cards;
-	}
-
-	async function populateDates() {
+	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
 			headers: {
 				'x-access-token': localStorage.getItem('token'),
@@ -62,24 +47,63 @@ export default function Learn() {
 
 		const data = await req.json()
 		if (data.status === 'ok') {
-			setAllDates(data.dates)
-			const selectDate = (
-				(_.filter(data.dates, (date) => {
-					return date.date === formattedDate;
-				}))[0]
+			const dates = data.dates;
+			// setAllDates(dates)
+			console.log(dates)
+			const languageFilteredDates = (
+				_.filter(dates, (date) => {
+					return date.language === language;
+				})
 			)
+
+			console.log(language)
+
+			setAllDates(languageFilteredDates);
+			console.log(languageFilteredDates);
+			
+			const selectDate = (
+				_.filter(languageFilteredDates, (date) => {
+					return date.date === formattedDate;
+				})
+			)
+			console.log(selectDate[0])
 			if (selectDate) { 
-				setCardCount(selectDate.cardCount);
+				setCardCount(selectDate[0] ? selectDate[0].cardCount : 0);
 			}
+			return dates;
+
 		} else {
 			alert(data.error)
 		}
 
+	}
+// debugger
+	async function populateCards(language) {
+		const req = await fetch(SERVER_URL + 'user/cards', {
+			headers: {
+				'x-access-token': localStorage.getItem('token'),
+			},
+		})
+
 		
 
-		return data.dates;
+		const data = await req.json()
+		if (data.status === 'ok') {
+			const cards = data.cards;
+			const languageFilteredCards = (
+				_.filter(cards, (card) => {
+					return card.language === language;
+				})
+			)
+		
+			setCards(languageFilteredCards)
+			return [language, languageFilteredCards];
+		} else {
+			alert(data.error)
+		}
 	}
-	
+
+
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
 			navigate('/login');
@@ -95,7 +119,27 @@ export default function Learn() {
 			}
 		}
 
-		async function getCards(cards) {
+		async function getLanguage() {
+			const response = await fetch(SERVER_URL + 'user/language', {
+				headers: {
+					'x-access-token': localStorage.getItem('token'),
+				},
+			});
+
+			if (!response.ok) {
+				const message = `An error occurred: ${ response.statusText }`;
+				window.alert(message);
+				return;
+			}
+
+			const { language } = await response.json();
+			setLanguage(language);
+			return language;
+		}
+
+		async function getCards(langCardsArray) {
+			const [language, cards] = langCardsArray
+			
 			const response = await fetch(SERVER_URL + 'cards');
 
 			if (!response.ok) {
@@ -105,38 +149,56 @@ export default function Learn() {
 			}
 
 			const allCards = await response.json();
-			const newCard = _.sample(allCards);
-			setSampleCard(newCard);
-			setInputWidth(newCard.targetWord.length * 0.7);
-			return [newCard, cards, allCards];
+			
+			return [language, cards, allCards];
 		}
 
-		populateDates();
+		// getLanguage().then((language) => 
 
-		populateCards().then((cards) => getCards(cards).then((cardArray) => {
-			const [newCard, cards, allCards] = cardArray;
+		getLanguage().then((language) => populateCards(language).then((langCardsArray) => getCards(langCardsArray).then((payload) => {
+			const [language, cards, allCards] = payload;
+
+			populateDates(language);
+			
+			const languageFilteredCards = (
+				_.filter(allCards, (card) => {
+					return card.language === language;
+				})
+			)
+			
+			const finishedCards = (
+				_.filter(cards, (card) => {
+					return card.cardProgress >= 5;
+				})
+			)
+
+			const arrayOfFinishedCards = _.map(finishedCards, 'cardId')
+
+			let filteredCards = languageFilteredCards ? languageFilteredCards : allCards;
+			
+			if (arrayOfFinishedCards.length > 1) {
+				filteredCards = (
+					_.reject(languageFilteredCards, (card) => {
+						return arrayOfFinishedCards.includes(card._id);
+					})
+				)
+			}
+
+			setAllCards(filteredCards);
+			const newSampleCard = _.sample(filteredCards);
+
+			setSampleCard(newSampleCard);
+			setInputWidth(newSampleCard.targetWord.length * 0.7);
 
 			const selectCard = (
 				(_.filter(cards, (card) => {
-					return card.cardId === newCard._id;
+					return card.cardId === newSampleCard._id;
 				}))[0]
 			)
 
-			const finishedCards = (
-				(_.reject(cards, (card) => {
-					return card.cardProgress < 5;
-				}))
-			)
-			const arrayOfFinishedCards = _.map(finishedCards, 'cardId')
+			
 
-			const filteredCards = (
-				(_.reject(allCards, (card) => {
-					return arrayOfFinishedCards.includes(card._id)
-				}))
-			)
 
-			console.log(filteredCards);
-			setAllCards(filteredCards);
 			setSelectedCard(selectCard);
 			setProgress(selectCard ? selectCard.cardProgress : 0);
 			
@@ -145,18 +207,18 @@ export default function Learn() {
 			} else {
 				setNewCard(false);
 			}
-		}))
+		})));
 
 		return;
 	}, [localStorage.getItem('token')])
-	
+
 	async function updateCards(e) {
 		e.preventDefault();
 		setFirstAttempt(false);
 		
-		const filteredCards = _.reject(cards, (card) => {
-			return card.cardId === sampleCard._id;
-		})
+		// const filteredCards = _.reject(cards, (card) => {
+		// 	return card.cardId === sampleCard._id;
+		// })
 
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
@@ -171,23 +233,23 @@ export default function Learn() {
 			}
 
 			const filteredCards = (
-				(_.reject(allCards, (card) => {
+				_.reject(allCards, (card) => {
 					if (selectedCard) {
 						return card._id === selectedCard.cardId;
 					}
-				}))
+				})
 			)
+
 
 			if (updatedProgress >= 5) {
 				setFinishedCard(true);
-				console.log(filteredCards);
 				setAllCards(filteredCards);
 			}
 
 			const newCard = _.sample(filteredCards);
 
 			setReadOnly(true);
-			
+			setInput(sampleCard.targetWord)
 
 			setTimeout(() => {
 				setReadOnly(false);
@@ -202,8 +264,8 @@ export default function Learn() {
 					return;
 				}
 				setNewCard(false);
-				setProgress(selectCard.cardProgress);
-			}, 400)
+				setProgress(todaysDate.cardCount);
+			}, 2500)
 
 			const selectCard = (
 				(_.filter(cards, (card) => {
@@ -233,6 +295,11 @@ export default function Learn() {
 			return date.date === todaysDate;
 		})
 
+		const filteredUserCards = (
+			_.reject(cards, (card) => {
+				return card.cardId === sampleCard._id;
+			})
+		)
 
 		const req = await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
@@ -241,10 +308,11 @@ export default function Learn() {
 				'x-access-token': localStorage.getItem('token'),
 			},
 			body: JSON.stringify({
-				cards: [...filteredCards, { 
+				cards: [...filteredUserCards, { 
 					'cardId': sampleCard._id,
 					'targetWord': sampleCard.targetWord,
-					'cardProgress': updatedProgress
+					'cardProgress': updatedProgress,
+					'language': language
 				} ],
 			}),
 		}).then(() => {
@@ -258,18 +326,17 @@ export default function Learn() {
 					dates: [...filteredDates, {
 						'date': todaysDate,
 						'cardCount': updatedCardCount,
+						'language': language
 					}]
 				})
 			})
 		})
 
-		populateCards();
-		populateDates();
-		console.log('dates')
+		populateCards(language);
+		populateDates(language);
 		
 	}
 
-	// debugger
 
 	return (
 		<div>
