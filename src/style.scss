@@ -11,6 +11,26 @@ body {
 	background-color: #121212;
 }
 
+@media only screen and (max-width: 363px) {
+	.logo {
+		font-size: 20px !important;
+	}
+	@media only screen and (max-width: 245px) {
+		.logo {
+			font-size: 19px !important;
+		}
+		@media only screen and (max-width: 225px) {
+			.logo {
+				font-size: 18px !important;
+			}
+			@media only screen and (max-width: 205px) {
+				#tonguist {
+					display: none;
+				}
+			}
+		}
+	}
+}
 
 .landing {
 	margin-top: 5vh;

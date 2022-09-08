@@ -56,7 +56,7 @@ export default function Register() {
 							Already have an account? <Link to="/login">Log in</Link>
 						</p>
 					</div>
-					<span className='alert' id={ alert && 'show' }>
+					<span className='alert' id={ alert ? 'show' : '' }>
 						<Alert severity="error">Email already taken, or server unavailable.</Alert>
 					</span>
 					<form onSubmit={ registerUser }>

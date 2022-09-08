@@ -54,7 +54,7 @@ export default function Login() {
 							Don't have an account? <Link to='/register'>Register</Link>
 						</p>
 					</div>
-					<span className='alert' id={ alert && 'show' }>
+					<span className='alert' id={ alert ? 'show' : '' }>
 						<Alert severity="error">Please check your email or password.</Alert>
 					</span>
 					<form onSubmit={ loginUser }>

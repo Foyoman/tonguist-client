@@ -13,10 +13,10 @@ class Navbar extends Component {
               style={{
                 fontFamily: "monospace"
               }}
-              className="col s5 brand-logo center white-text"
+              className="col s5 brand-logo center white-text logo"
             >
               <i className="material-icons">translate</i>
-              tonguist
+              <span className="logo" id="tonguist">tonguist</span>
             </Link>
 
           </div>
