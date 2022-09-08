@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router';
+import Alert from '@mui/material/Alert';
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function Login() {
 	
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [alert, setAlert] = useState(false);
 
 	async function loginUser(e) {
 		e.preventDefault();
@@ -27,12 +29,12 @@ export default function Login() {
 		const data = await response.json()
 
 		if (data.user) {
-			// sessionStorage.setItem('token', data.user)
+			setAlert(false);
 			localStorage.setItem('token', data.user);
 			console.log('Login successful');
 			navigate('/dashboard');
 		} else {
-			alert('Please check your username and password') // TODO: add this as an error message instead of an alert
+			setAlert(true);
 		}
 	}
 	
@@ -52,6 +54,9 @@ export default function Login() {
 							Don't have an account? <Link to='/register'>Register</Link>
 						</p>
 					</div>
+					<span className='alert' id={ alert && 'show' }>
+						<Alert severity="error">Please check your email or password.</Alert>
+					</span>
 					<form onSubmit={ loginUser }>
 						<div className='input-field col s12'>
 							<input 

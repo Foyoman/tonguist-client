@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom'
+import Alert from '@mui/material/Alert';
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function Register() {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [alert, setAlert] = useState(false);
 
 	async function registerUser(e) {
 		e.preventDefault();
@@ -29,14 +31,18 @@ export default function Register() {
 		const data = await response.json()
 
 		if (data.status === 'ok') {
+			setAlert(false);
 			navigate('/login')		
+		} else {
+			setAlert(true);
+			console.error('error')
 		}
 	}
 	
 	
 	return (
 		<div className="container">
-			<div className="row">
+			<div style={{ marginTop: '4rem' }} className="row">
 				<div className="col s8 offset-s2 mobile-width-100">
 					<Link to="/" className="btn-flat waves-effect">
 						<i className="material-icons left">keyboard_backspace</i> Back to
@@ -50,6 +56,9 @@ export default function Register() {
 							Already have an account? <Link to="/login">Log in</Link>
 						</p>
 					</div>
+					<span className='alert' id={ alert && 'show' }>
+						<Alert severity="error">Email already taken, or server unavailable.</Alert>
+					</span>
 					<form onSubmit={ registerUser }>
 						<div className="input-field col s12">
 						<input 

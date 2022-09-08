@@ -36,11 +36,14 @@ export default function Profile() {
 				<h4 style={{ marginTop: '0' }}>
 					<strong>Thank you, </strong>{ user && user.name }
 				</h4>
-				<p style={{ fontSize: '16px' }}>for being a part of this experience. I am a strong supporter of language learning and every other means of exposing yourself to different cultures, so it really means a lot to me that you took the time to make an account and test out my little web app. {"<3"}</p>
+				<p>for being a part of this experience. I am a strong supporter of language learning and every other means of exposing yourself to different cultures, so it really means a lot to me that you took the time to make an account and test out my little web app. {"<3"}</p>
 				<br />
-				<p style={{ fontSize: '16px' }}>Special thanks also goes out to everyone at General Assembly, Joel, possibly the best instructor at GA, Loden, possibly the best IA after me, and to all my classmates from SEI54 for being so cool. </p>
+				<p>Special thanks also goes out to everyone at General Assembly, Joel, Loden, and to all my classmates from SEI54 for being so cool. </p>
+				<br />
+				<p>King Regards,</p>
+				<p>Ed</p>
 			</Card>
-			<Button style={{ fontSize: '16px' }} onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
+			<Button onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
 		</div>
 	)
 }

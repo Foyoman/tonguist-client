@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './components/App';
 import Home from './components/Home';
 import Admin from './components/admin/Admin';
-import Learn from './components/Learn';
+import Learn from './components/hub/Learn';
 import CreateCard from './components/admin/CreateCard';
 import CardList from './components/admin/CardList';
 import EditCard from './components/admin/EditCard';
@@ -35,8 +35,8 @@ const routes = (
         </Route>
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
-        <Route path="/learn" element={ <Learn /> } />
         <Route element={<Hub />}>
+          <Route path="/learn" element={ <Learn /> } />
           <Route path="/dashboard" element={ <Dashboard /> } />
           <Route path="/profile" element={ <Profile /> } />
         </Route>

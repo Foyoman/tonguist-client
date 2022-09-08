@@ -2,10 +2,19 @@ $correct: rgba(37, 154, 104, 0.2);
 $brighterCorrect: rgba(0, 255, 144, 0.8);
 $purp: #ce93d8;
 
-// html, .navbar-fixed > * {
+// html, .z-depth-0, .navbar-fixed, .nav-wrapper {
 // 	max-width: 500px;
 // 	margin: 0 auto;
 // }
+
+body {
+	background-color: #121212;
+}
+
+
+.landing {
+	margin-top: 5vh;
+}
 
 @media only screen and (min-width: 500px) {
 	.no-display-mobile {
@@ -260,11 +269,28 @@ button:focus {
 }
 
 .log-out {
+	font-size: 20px;
 	width: 100%;
 }
 
 .profile {
 	@extend .dashboard;
+
+	p {
+		font-size: 16px;
+	}
+
+	.MuiButtonBase-root {
+		font-size: 20px;
+	}
+}
+
+.alert, .alert > * {
+	display: none;
+}
+
+#show {
+	display: block;
 }
 
 @media only screen and (max-width: 600px) {

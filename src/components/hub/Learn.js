@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken'; 
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
-import '../style.scss';
+import '../../style.scss';
 import { Card, Divider, Box, Checkbox, getDialogContentTextUtilityClass } from '@mui/material';
 
 import BoyIcon from '@mui/icons-material/Boy';
