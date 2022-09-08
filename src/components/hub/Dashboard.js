@@ -100,7 +100,6 @@ export default function Dashboard() {
 		if (token) {
       const user = jwt.decode(token);
       if (user) { 
-				console.log(user)
         setName(user.name);
       }
       if (!user) { 

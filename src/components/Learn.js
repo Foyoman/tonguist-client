@@ -31,6 +31,8 @@ export default function Learn() {
 	const [todaysDate, setTodaysDate] = useState('');
 	const [cardCount, setCardCount] = useState(0);
 	const [language, setLanguage] = useState('');
+	const [allLangCards, setAllLangCards] = useState([]);
+	const [allLangDates, setAllLangDates] = useState([]);
 
 	const SERVER_URL = `http://localhost:6969/`;
 
@@ -48,25 +50,21 @@ export default function Learn() {
 		const data = await req.json()
 		if (data.status === 'ok') {
 			const dates = data.dates;
-			// setAllDates(dates)
-			console.log(dates)
+			setAllLangDates(dates);
 			const languageFilteredDates = (
 				_.filter(dates, (date) => {
 					return date.language === language;
 				})
 			)
 
-			console.log(language)
-
 			setAllDates(languageFilteredDates);
-			console.log(languageFilteredDates);
 			
 			const selectDate = (
 				_.filter(languageFilteredDates, (date) => {
 					return date.date === formattedDate;
 				})
 			)
-			console.log(selectDate[0])
+
 			if (selectDate) { 
 				setCardCount(selectDate[0] ? selectDate[0].cardCount : 0);
 			}
@@ -90,6 +88,7 @@ export default function Learn() {
 		const data = await req.json()
 		if (data.status === 'ok') {
 			const cards = data.cards;
+			setAllLangCards(cards);
 			const languageFilteredCards = (
 				_.filter(cards, (card) => {
 					return card.language === language;
@@ -258,13 +257,14 @@ export default function Learn() {
 				setSampleCard(newCard);
 				setInputWidth(newCard.targetWord.length * 0.7);
 				setFinishedCard(false);
-				if (!selectCard) {
+				if (selectCard) {
+					setProgress(selectCard.cardProgress);
+				} else {
 					setNewCard(true);
 					setProgress(0);
 					return;
 				}
 				setNewCard(false);
-				setProgress(todaysDate.cardCount);
 			}, 2500)
 
 			const selectCard = (
@@ -288,19 +288,20 @@ export default function Learn() {
 		}
 
 		const updatedCardCount = cardCount + 1;
-		// setCardCount(updatedCardCount)
-
 		
-		const filteredDates = _.reject(allDates, (date) => {
-			return date.date === todaysDate;
-		})
-
-		const filteredUserCards = (
-			_.reject(cards, (card) => {
-				return card.cardId === sampleCard._id;
+		const filteredDates = (
+			_.reject(allLangDates, (date) => {
+				console.log(date.date, todaysDate)
+				return date.date === todaysDate && date.language === language;
 			})
 		)
 
+		const filteredUserCards = (
+			_.reject(allLangCards, (card) => {
+				return card.cardId === sampleCard._id;
+			})
+		)
+	
 		const req = await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
 			headers: {

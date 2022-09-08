@@ -23,7 +23,7 @@ export default function Profile() {
 	
 	return (
 		<div className='profile'>
-			<h2><strong>Profile</strong></h2>
+			<h2 style={{ margin: '0' }}><strong>Profile</strong></h2>
 			<Card className='dash-card'>
 				<h3 style={{ margin: '0' }}>
 					<strong>{ user && user.name }</strong>
@@ -33,9 +33,12 @@ export default function Profile() {
 				</p>
 			</Card>
 			<Card className='dash-card profile-info'>
-				<p>
-					<strong>Email:</strong> { user && user.email }
-				</p>
+				<h4 style={{ marginTop: '0' }}>
+					<strong>Thank you, </strong>{ user && user.name }
+				</h4>
+				<p style={{ fontSize: '16px' }}>for being a part of this experience. I am a strong supporter of language learning and every other means of exposing yourself to different cultures, so it really means a lot to me that you took the time to make an account and test out my little web app. {"<3"}</p>
+				<br />
+				<p style={{ fontSize: '16px' }}>Special thanks also goes out to everyone at General Assembly, Joel, possibly the best instructor at GA, Loden, possibly the best IA after me, and to all my classmates from SEI54 for being so cool. </p>
 			</Card>
 			<Button style={{ fontSize: '16px' }} onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
 		</div>
