@@ -43,7 +43,7 @@ export default function Profile() {
 				<p>King Regards,</p>
 				<p>Ed</p>
 			</Card>
-			<Button onClick={ handleLogOut } variant='contained' color='secondary' className='log-out'>Log Out</Button>
+			<Button onClick={ handleLogOut } variant='contained' color='secondary'>Log Out</Button>
 		</div>
 	)
 }

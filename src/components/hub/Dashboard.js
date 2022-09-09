@@ -74,7 +74,7 @@ export default function Dashboard() {
 		if (data.status === 'ok') {
 			todaysCardCount = (
 				(_.filter(dates, (date) => {
-					return date.date === todaysDate;
+					return date.date === todaysDate && date.language === language;
 				}))[0]
 			)
 		} else {
@@ -196,7 +196,7 @@ export default function Dashboard() {
 				})[0]
 			)
 
-			if (fourDaysAgosCount && fourDaysAgosCount >= 50) {
+			if (fourDaysAgosCount && fourDaysAgosCount.cardCount >= 50) {
 				setFourDaysAgosCount(true);
 			};
 
@@ -210,7 +210,7 @@ export default function Dashboard() {
 				})[0]
 			)
 
-			if (fiveDaysAgosCount && fiveDaysAgosCount >= 50) {
+			if (fiveDaysAgosCount && fiveDaysAgosCount.cardCount >= 50) {
 				setFiveDaysAgosCount(true);
 			};
 
@@ -224,7 +224,7 @@ export default function Dashboard() {
 				})[0]
 			)
 
-			if (sixDaysAgosCount && sixDaysAgosCount >= 50) {
+			if (sixDaysAgosCount && sixDaysAgosCount.cardCount >= 50) {
 				setSixDaysAgosCount(true);
 			};
 
@@ -238,7 +238,7 @@ export default function Dashboard() {
 				})[0]
 			)
 
-			if (aWeekAgosCount && aWeekAgosCount >= 50) {
+			if (aWeekAgosCount && aWeekAgosCount.cardCount >= 50) {
 				setAWeekAgosCount(true);
 			};
 

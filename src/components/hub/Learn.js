@@ -218,7 +218,7 @@ export default function Learn() {
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-		if (input.toLowerCase() === noDiacritics || input.toLowerCase() === sampleCard.targetWord) {
+		if (input.toLowerCase() === noDiacritics.toLowerCase() || input.toLowerCase() === sampleCard.targetWord.toLowerCase()) {
 			if (firstAttempt) {
 				setCorrect(true);
 				setProgress(progress + 1);
@@ -274,7 +274,7 @@ export default function Learn() {
 			setFirstAttempt(true);
 		} 
 
-		if (input.toLowerCase() !== noDiacritics) { 
+		if (input.toLowerCase() !== noDiacritics.toLowerCase() && input.toLowerCase() !== sampleCard.targetWord.toLowerCase()) { 
 			setInput('');
 			setProgress(1);
 		}
@@ -355,6 +355,7 @@ export default function Learn() {
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
 					<form onSubmit={ updateCards } style={{ display: 'inline' }} autoComplete='off'>
 						<input 
+							autoFocus
 							readOnly={ readOnly }
 							value={ input } 
 							onChange={ (e) => setInput(e.target.value) }

@@ -11,9 +11,11 @@ export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [alert, setAlert] = useState(false);
+	const [readOnly, setReadOnly] = useState(false);
 
 	async function loginUser(e) {
 		e.preventDefault();
+		setReadOnly(true);
 
 		const response = await fetch(SERVER_URL, {
 			method: 'POST',
@@ -35,6 +37,7 @@ export default function Login() {
 			navigate('/dashboard');
 		} else {
 			setAlert(true);
+			setReadOnly(false);
 		}
 	}
 	
@@ -60,6 +63,7 @@ export default function Login() {
 					<form onSubmit={ loginUser }>
 						<div className='input-field col s12'>
 							<input 
+								readOnly={ readOnly }
 								value={ email }
 								onChange={(e) => setEmail(e.target.value)}
 								type="email" 
@@ -68,6 +72,7 @@ export default function Login() {
 						</div>
 						<div className='input-field col s12'>
 							<input 
+								readOnly={ readOnly }
 								value={ password }
 								onChange={(e) => setPassword(e.target.value)}
 								type="password" 

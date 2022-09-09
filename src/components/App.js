@@ -13,7 +13,7 @@ function App() {
     () => 
       createTheme({
         palette: {
-          mode: prefersDarkMode ? 'dark' : 'light'
+          mode: 'dark'
         }
       }),
     [prefersDarkMode],

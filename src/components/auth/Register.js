@@ -12,9 +12,11 @@ export default function Register() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [alert, setAlert] = useState(false);
+	const [readOnly, setReadOnly] = useState(false);
 
 	async function registerUser(e) {
 		e.preventDefault();
+		setReadOnly(true);
 
 		const response = await fetch(SERVER_URL, {
 			method: 'POST',
@@ -34,6 +36,7 @@ export default function Register() {
 			setAlert(false);
 			navigate('/login')		
 		} else {
+			setReadOnly(false);
 			setAlert(true);
 			console.error('error')
 		}
@@ -62,6 +65,7 @@ export default function Register() {
 					<form onSubmit={ registerUser }>
 						<div className="input-field col s12">
 						<input 
+							readOnly={ readOnly }
 							value={ name }
 							onChange={(e) => setName(e.target.value)}
 							type="text" 
@@ -79,6 +83,7 @@ export default function Register() {
 						</div>
 						<div className="input-field col s12">
 						<input 
+							readOnly={ readOnly }
 							value={ password }
 							onChange={(e) => setPassword(e.target.value)}
 							type="password" 
