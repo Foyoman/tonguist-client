@@ -4,7 +4,7 @@ import { Outlet } from 'react-router'
 
 export default function Hub() {
 	return (
-		<div>
+		<div className='hub'>
 			<Outlet />
 			<BottomNavigation />
 		</div>

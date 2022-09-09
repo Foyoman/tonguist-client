@@ -284,6 +284,12 @@ button:focus {
 	transform: translate(-50%);
 }
 
+@media only screen and (max-height: 540px) {
+	#bottom-navigation {
+		display: none;
+	}
+}
+
 .Mui-selected > * {
 	color: $purp;
 }
@@ -303,6 +309,10 @@ button:focus {
 	.MuiButtonBase-root {
 		font-size: 20px;
 	}
+}
+
+.dashboard, .profile {
+	padding-bottom: 70px;
 }
 
 .alert, .alert > * {
