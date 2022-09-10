@@ -8,7 +8,7 @@ export default function EditCard() {
 
 	const [card, setCard] = useState();
 
-	const SERVER_URL = `https://tonguist.herokuapp.com/cards/${ params.id.toString() }`
+	const SERVER_URL = `http://localhost:6969/cards/${ params.id.toString() }` // keep this as local host as an extra security measure for admin crud
 	
 	useEffect(() => {
 		async function fetchData() {

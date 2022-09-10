@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 export default function CreateCard() {
 	const navigate = useNavigate();
 
-	const SERVER_URL = 'https://tonguist.herokuapp.com/cards/'
+	const SERVER_URL = 'http://localhost:6969/cards' // keep this as local host as an extra security measure for admin crud
 
 	async function saveCard(form) {
 		const newCard = {
