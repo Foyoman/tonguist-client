@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -12,10 +13,12 @@ export default function Login() {
 	const [password, setPassword] = useState('');
 	const [alert, setAlert] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	async function loginUser(e) {
 		e.preventDefault();
 		setReadOnly(true);
+		setLoading(true);
 
 		const response = await fetch(SERVER_URL, {
 			method: 'POST',
@@ -26,6 +29,10 @@ export default function Login() {
 				email,
 				password,
 			})
+		}).catch(() => {
+			setAlert(true);
+			setReadOnly(false);
+			setLoading(false);
 		})
 
 		const data = await response.json()
@@ -38,6 +45,7 @@ export default function Login() {
 		} else {
 			setAlert(true);
 			setReadOnly(false);
+			setLoading(false);
 		}
 	}
 	
@@ -85,12 +93,18 @@ export default function Login() {
 									width: '150px',
 									borderRadius: '3px',
 									letterSpacing: '1.5px',
-									marginTop: '1rem'
+									marginTop: '1rem',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									backgroundColor: `${ loading ? '#121212' : '' }`
 								}}
 								type='submit'
 								className='btn btn-large waves-effect waves-light hoverable'
 							>
-								Login
+								{ loading ?
+									<CircularProgress color="success" style={{ display: 'flex', boxSizing: 'border-box' }} />
+								: 'Login' }
 							</button>
 						</div>
 					</form>

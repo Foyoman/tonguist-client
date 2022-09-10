@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import jwt from 'jsonwebtoken'; 
 import { useNavigate } from 'react-router';
 import _ from 'lodash';
@@ -13,6 +13,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export default function Learn() {
 	const navigate = useNavigate();
+	const inputRef = useRef();
 
 	const [cards, setCards] = useState([]);
 	const [allCards, setAllCards] = useState([]);
@@ -69,17 +70,14 @@ export default function Learn() {
 		} else {
 			alert(data.error)
 		}
-
 	}
-// debugger
+
 	async function populateCards(language) {
 		const req = await fetch(SERVER_URL + 'user/cards', {
 			headers: {
 				'x-access-token': localStorage.getItem('token'),
 			},
 		})
-
-		
 
 		const data = await req.json()
 		if (data.status === 'ok') {
@@ -97,7 +95,6 @@ export default function Learn() {
 			alert(data.error)
 		}
 	}
-
 
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
@@ -148,8 +145,6 @@ export default function Learn() {
 			return [language, cards, allCards];
 		}
 
-		// getLanguage().then((language) => 
-
 		getLanguage().then((language) => populateCards(language).then((langCardsArray) => getCards(langCardsArray).then((payload) => {
 			const [language, cards, allCards] = payload;
 
@@ -191,9 +186,6 @@ export default function Learn() {
 				}))[0]
 			)
 
-			
-
-
 			setSelectedCard(selectCard);
 			setProgress(selectCard ? selectCard.cardProgress : 0);
 			
@@ -207,14 +199,9 @@ export default function Learn() {
 		return;
 	}, [localStorage.getItem('token')])
 
-	async function updateCards(e) {
-		e.preventDefault();
+	async function updateCards() {
 		setFirstAttempt(false);
 		
-		// const filteredCards = _.reject(cards, (card) => {
-		// 	return card.cardId === sampleCard._id;
-		// })
-
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
@@ -247,6 +234,7 @@ export default function Learn() {
 			setInput(sampleCard.targetWord)
 
 			setTimeout(() => {
+				inputRef.current.focus();
 				setReadOnly(false);
 				setCorrect(false);
 				setInput('');
@@ -297,7 +285,7 @@ export default function Learn() {
 			})
 		)
 	
-		const req = await fetch(SERVER_URL + 'user/cards', {
+		await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -330,9 +318,17 @@ export default function Learn() {
 
 		populateCards(language);
 		populateDates(language);
-		
 	}
 
+	const _handleChange = (e) => {
+		if (readOnly) {
+			e.preventDefault();
+		}
+
+		if (e.key === 'Enter') {
+			updateCards();
+		}
+	}
 
 	return (
 		<div>
@@ -353,20 +349,29 @@ export default function Learn() {
 				</span>
 				<div className='whole-phrase'>
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
-					<form onSubmit={ updateCards } style={{ display: 'inline' }} autoComplete='off'>
 						<input 
+							ref={ inputRef }
 							autoFocus
-							readOnly={ readOnly }
+							autoCapitalize="none"
+							autoComplete='off'
+							autoCorrect='off'
+							spellCheck='false'
 							value={ input } 
 							onChange={ (e) => setInput(e.target.value) }
+							onKeyDown={ _handleChange }
 							placeholder={ !firstAttempt ? sampleCard.targetWord : "" }
 							id={ correct ? 'correct-input' : 'card-input' }
 							className='card-input'
-							style={{ all: 'none', fontSize: '20px', height: '1.5em', width: `${ inputWidth }em` }}
+							style={{
+								all: 'none', 
+								fontSize: '20px', 
+								height: '1.5em', 
+								width: `${ inputWidth }em`, 
+								display: 'inline',
+								margin: '0 0.2em',
+								caretColor: `${ readOnly ? 'transparent' : '' }`
+							}}
 						/>
-
-						<button type="submit" style={{ display: 'none' }}>Update card progress</button>
-					</form>
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseEnd : "" }</p>
 				</div>
 				<br />
@@ -409,5 +414,3 @@ export default function Learn() {
 		</div>
 	)
 }
-
-

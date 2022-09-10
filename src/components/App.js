@@ -2,22 +2,16 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = React.useMemo(
-    () => 
-      createTheme({
-        palette: {
-          mode: 'dark'
-        }
-      }),
-    [prefersDarkMode],
-  );
+  const theme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 	
   return (
     <ThemeProvider theme={ theme }>

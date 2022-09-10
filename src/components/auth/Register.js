@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom'
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -13,10 +14,12 @@ export default function Register() {
 	const [password, setPassword] = useState('');
 	const [alert, setAlert] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	async function registerUser(e) {
 		e.preventDefault();
 		setReadOnly(true);
+		setLoading(true);
 
 		const response = await fetch(SERVER_URL, {
 			method: 'POST',
@@ -28,17 +31,22 @@ export default function Register() {
 				email,
 				password,
 			})
+		}).catch(() => {
+			setAlert(true);
+			setReadOnly(false);
+			setLoading(false);
 		})
 
 		const data = await response.json()
 
 		if (data.status === 'ok') {
 			setAlert(false);
-			navigate('/login')		
+			navigate('/login');
 		} else {
-			setReadOnly(false);
+			console.error('error');
 			setAlert(true);
-			console.error('error')
+			setReadOnly(false);
+			setLoading(false);
 		}
 	}
 	
@@ -60,7 +68,11 @@ export default function Register() {
 						</p>
 					</div>
 					<span className='alert' id={ alert ? 'show' : '' }>
-						<Alert severity="error">Email already taken, or server unavailable.</Alert>
+						<Alert 
+							style={{ display: 'flex', alignItems: 'center' }} severity="error"
+						>
+							Email already taken, or server unavailable.
+						</Alert>
 					</span>
 					<form onSubmit={ registerUser }>
 						<div className="input-field col s12">
@@ -96,12 +108,18 @@ export default function Register() {
 									width: "150px",
 									borderRadius: "3px",
 									letterSpacing: "1.5px",
-									marginTop: "1rem"
+									marginTop: "1rem",
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									backgroundColor: `${ loading ? '#121212' : '#2979FF' }`
 								}}
 								type="submit"
-								className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+								className="btn btn-large waves-effect waves-light hoverable accent-3"
 							>
-								Sign up
+								{ loading ?
+									<CircularProgress color='primary' style={{ display: 'flex', boxSizing: 'border-box' }} />
+								: 'Sign up' }
 							</button>
 						</div>
 					</form>

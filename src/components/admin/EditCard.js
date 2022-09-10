@@ -34,7 +34,7 @@ export default function EditCard() {
 		fetchData();
 		
 		return;
-	}, [params.id, navigate]);
+	}, [params.id]);
 
 	async function updateCard(form) {
 		const editedCard = {

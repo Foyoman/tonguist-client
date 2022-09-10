@@ -15,7 +15,7 @@ export default function CardForm(props) {
 
 	function updateForm(value) {
 		return setForm((prev) => {
-			return {...prev, ... value};
+			return {...prev, ...value};
 		});
 	}
 
