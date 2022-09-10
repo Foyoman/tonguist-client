@@ -65,6 +65,7 @@ export default function Register() {
 					<form onSubmit={ registerUser }>
 						<div className="input-field col s12">
 						<input 
+							maxLength={ 16 }
 							readOnly={ readOnly }
 							value={ name }
 							onChange={(e) => setName(e.target.value)}
@@ -74,7 +75,6 @@ export default function Register() {
 						</div>
 						<div className="input-field col s12">
 						<input 
-							maxLength={ 16 }
 							value={ email }
 							onChange={(e) => setEmail(e.target.value)}
 							type="email" 

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 export default function CreateCard() {
 	const navigate = useNavigate();
 
+	const SERVER_URL = 'https://tonguist.herokuapp.com/cards/'
+
 	async function saveCard(form) {
 		const newCard = {
 			language: form.language,
@@ -18,7 +20,7 @@ export default function CreateCard() {
 		};
 
 
-		await fetch("http://localhost:6969/cards", {
+		await fetch(SERVER_URL, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
