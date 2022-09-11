@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken'; 
 import { useNavigate } from 'react-router';
-import _ from 'lodash';
+import _, { set } from 'lodash';
 import '../../style.scss';
 import { Card, Divider } from '@mui/material';
 
@@ -13,7 +13,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export default function Learn() {
 	const navigate = useNavigate();
-	const inputRef = useRef();
 
 	const [cards, setCards] = useState([]);
 	const [allCards, setAllCards] = useState([]);
@@ -24,7 +23,7 @@ export default function Learn() {
 	const [inputWidth, setInputWidth] = useState('');
 	const [newCard, setNewCard] = useState(false);
 	const [progress, setProgress] = useState(0);
-	const [readOnly, setReadOnly] = useState(false);
+	const [readOnly, setReadOnly] = useState(true);
 	const [correct, setCorrect] = useState(false);
 	const [finishedCard, setFinishedCard] = useState(false);
 	const [todaysDate, setTodaysDate] = useState('');
@@ -35,38 +34,19 @@ export default function Learn() {
 
 	const SERVER_URL = `https://tonguist.herokuapp.com/`;
 
-	async function populateDates(language) {
+	async function populateDates() {
 		const req = await fetch(SERVER_URL + 'user/dates', {
 			headers: {
 				'x-access-token': localStorage.getItem('token'),
 			},
 		})
 
-		const today = new Date();
-		const formattedDate = String(today).split(' ').slice(0, 4).join(' ');
-		setTodaysDate(formattedDate);
-
 		const data = await req.json()
 		if (data.status === 'ok') {
 			const dates = data.dates;
 			setAllLangDates(dates);
-			const languageFilteredDates = (
-				_.filter(dates, (date) => {
-					return date.language === language;
-				})
-			)
 
-			const selectDate = (
-				_.filter(languageFilteredDates, (date) => {
-					return date.date === formattedDate;
-				})
-			)
-
-			if (selectDate) { 
-				setCardCount(selectDate[0] ? selectDate[0].cardCount : 0);
-			}
 			return dates;
-
 		} else {
 			alert(data.error)
 		}
@@ -89,12 +69,13 @@ export default function Learn() {
 				})
 			)
 		
-			setCards(languageFilteredCards)
+			setCards(languageFilteredCards);
 			return [language, languageFilteredCards];
 		} else {
 			alert(data.error)
 		}
 	}
+
 
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
@@ -147,8 +128,21 @@ export default function Learn() {
 
 		getLanguage().then((language) => populateCards(language).then((langCardsArray) => getCards(langCardsArray).then((payload) => {
 			const [language, cards, allCards] = payload;
+			const today = new Date();
+			const formattedDate = String(today).split(' ').slice(0, 4).join(' ');
+			setTodaysDate(formattedDate);
 
-			populateDates(language);
+			populateDates().then((dates) => {
+				const selectDate = (
+					_.filter(dates, (date) => {
+						return date.date === formattedDate && date.language === language;
+					})
+				)
+	
+				if (selectDate) { 
+					setCardCount(selectDate[0] ? selectDate[0].cardCount : 0);
+				}
+			} );
 			
 			const languageFilteredCards = (
 				_.filter(allCards, (card) => {
@@ -188,12 +182,16 @@ export default function Learn() {
 
 			setSelectedCard(selectCard);
 			setProgress(selectCard ? selectCard.cardProgress : 0);
+
+			
 			
 			if (!selectCard) {
 				setNewCard(true);
 			} else {
 				setNewCard(false);
 			}
+
+			setReadOnly(false);
 		})));
 
 		return;
@@ -234,7 +232,6 @@ export default function Learn() {
 			setInput(sampleCard.targetWord)
 
 			setTimeout(() => {
-				inputRef.current.focus();
 				setReadOnly(false);
 				setCorrect(false);
 				setInput('');
@@ -272,6 +269,7 @@ export default function Learn() {
 		}
 
 		const updatedCardCount = cardCount + 1;
+		setCardCount(updatedCardCount);		
 		
 		const filteredDates = (
 			_.reject(allLangDates, (date) => {
@@ -284,7 +282,7 @@ export default function Learn() {
 				return card.cardId === sampleCard._id;
 			})
 		)
-	
+
 		await fetch(SERVER_URL + 'user/cards', {
 			method: 'POST',
 			headers: {
@@ -297,7 +295,7 @@ export default function Learn() {
 					'targetWord': sampleCard.targetWord,
 					'cardProgress': updatedProgress,
 					'language': language
-				} ],
+				}],
 			}),
 		}).then(() => {
 			fetch(SERVER_URL + 'user/dates', {
@@ -317,7 +315,6 @@ export default function Learn() {
 		})
 
 		populateCards(language);
-		populateDates(language);
 	}
 
 	const _handleChange = (e) => {
@@ -350,7 +347,6 @@ export default function Learn() {
 				<div className='whole-phrase'>
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
 						<input 
-							ref={ inputRef }
 							autoFocus
 							autoCapitalize="none"
 							autoComplete='off'
