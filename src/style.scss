@@ -342,6 +342,12 @@ button:focus {
 }
 
 @media only screen and (min-width: 500px) {
+	.dashboard, .profile {
+		padding-bottom: 94px;
+	}
+	.dash-card {
+		padding: 2em !important; 
+	}
 	#welcome-back {
 		font-size: 54px;
 	}
@@ -381,7 +387,12 @@ button:focus {
 
 	#bottom-navigation {
 		background: transparent;
-		bottom: 24px;
+		margin-bottom: 24px;
+		.MuiBottomNavigationAction-root {
+			background-color: rgba(0, 0, 0, 0.4);
+			-webkit-backdrop-filter: blur(10px);
+			backdrop-filter: blur(10px); 
+		}
 		.MuiBottomNavigationAction-root[href='#/dashboard'] {
 			border-top-left-radius: 15px;
 			border-bottom-left-radius: 15px;
