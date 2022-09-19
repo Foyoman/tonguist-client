@@ -15,7 +15,7 @@ export default function LabelBottomNavigation() {
   };
 
   return (
-    <BottomNavigation id='bottom-navigation' sx={{ width: '100%', height: '70px' }} value={value} onChange={handleChange} className='bottom-navigation no-display-mobile'>
+    <BottomNavigation id='bottom-navigation' sx={{ width: '100%', height: '70px' }} value={value} onChange={handleChange} className='bottom-navigation'>
       <BottomNavigationAction
 				href="#/dashboard"
         label="Home"

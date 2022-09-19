@@ -331,7 +331,7 @@ export default function Learn() {
 	return (
 		<div>
 			<Card className='container learn-card'>
-				<span style={{ margin: '0', padding: '0', display: 'flex' }}>
+				<span style={{ margin: '0', padding: '0', display: 'flex', alignItems: 'center' }}>
 					<span className='stripes'>
 						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 0 && 'checked' }` } id={ newCard ? 'new-word-stripe' : '' } />
 						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 2 && 'checked' }` } />
@@ -354,6 +354,7 @@ export default function Learn() {
 							autoComplete='off'
 							autoCorrect='off'
 							spellCheck='false'
+							type='search'
 							value={ input } 
 							onChange={ (e) => setInput(e.target.value) }
 							onKeyDown={ _handleChange }
