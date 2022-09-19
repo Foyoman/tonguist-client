@@ -232,6 +232,7 @@ export default function Learn() {
 			setInput(sampleCard.targetWord)
 
 			setTimeout(() => {
+				setFirstAttempt(true);
 				setReadOnly(false);
 				setCorrect(false);
 				setInput('');
@@ -247,7 +248,7 @@ export default function Learn() {
 				}
 				setNewCard(false);
 			}, 2500)
-
+			
 			const selectCard = (
 				(_.filter(cards, (card) => {
 					return card.cardId === newCard._id;
@@ -256,7 +257,6 @@ export default function Learn() {
 
 			setSelectedCard(selectCard);
 			
-			setFirstAttempt(true);
 		} 
 
 		if (input.toLowerCase() !== noDiacritics.toLowerCase() && input.toLowerCase() !== sampleCard.targetWord.toLowerCase()) { 
@@ -320,6 +320,7 @@ export default function Learn() {
 	const _handleChange = (e) => {
 		if (readOnly) {
 			e.preventDefault();
+			return;
 		}
 
 		if (e.key === 'Enter') {
@@ -347,6 +348,7 @@ export default function Learn() {
 				<div className='whole-phrase'>
 					<p style={{ display: 'inline', fontSize: '20px' }}>{ sampleCard ? sampleCard.phraseStart : "" }</p>
 						<input 
+							type='search'
 							autoFocus
 							autoCapitalize="none"
 							autoComplete='off'
