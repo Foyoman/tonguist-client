@@ -1,5 +1,4 @@
-# tonguist 
-## a flashcards app for language learning
+# tonguist - a flashcards app for language learning
 
 Click [_here_](https://tonguist.netlify.app/) to make an account and start learning languages!
 This is the client repo for tonguist. Click [_here_](https://github.com/Foyoman/tonguist-server) to check out the server repo.
