@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# tonguist - a flashcards app for language learning
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Click [_here_](https://tonguist.netlify.app/) to make an account and start learning languages!
 
-## Available Scripts
+---------------------
 
-In the project directory, you can run:
+tonguist is a web-app accessible on mobile, tablet and desktop meant for language learning through flashcards. The two languages currently available on tonguist at the moment are Spanish, and French. tonguist flashcards are incredibly dynamic, and are designed to ensure that every word learnt sticks and stays in your long term memory. 
+-----------------
 
-### `npm start`
+You can test the app with the following users, or create an account for yourself.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| **email**         | **Password** |
+|:--------------------:|:------------:|
+|sei54@ga.co           |   chicken    |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## General Information
+- Sign up, choose a language to learn, start bussin' out flashcards, and track your progress. On tonguist, after you've successfully made an account you can choose which language you want to learn, out of Spanish and French, you can start learning with the flashcards where completing 50 will complete your daily goal, and on the dashboard you can track your progress for the day and for the week, seeing on which days you successfully completed your daily goal. 
 
-### `npm test`
+## Languages Used
+- JavaScript
+- SCSS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Technologies Used
+- MongoDB
+- Express.js
+- React.js
+- Node.js
+- Material UI
