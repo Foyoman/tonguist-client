@@ -1,10 +1,12 @@
 # tonguist - a flashcards app for language learning
 
 Click [_here_](https://tonguist.netlify.app/) to make an account and start learning languages!
+This is the client repo for tonguist. Click [_here_](https://github.com/Foyoman/tonguist-server) to check out the server repo.
 
 ---------------------
 
 tonguist is a web-app accessible on mobile, tablet and desktop meant for language learning through flashcards. The two languages currently available on tonguist at the moment are Spanish, and French. tonguist flashcards are incredibly dynamic, and are designed to ensure that every word learnt sticks and stays in your long term memory. 
+
 -----------------
 
 You can test the app with the following users, or create an account for yourself.
