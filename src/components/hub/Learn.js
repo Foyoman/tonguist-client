@@ -354,7 +354,6 @@ export default function Learn() {
 							autoComplete='off'
 							autoCorrect='off'
 							spellCheck='false'
-							type='search'
 							value={ input } 
 							onChange={ (e) => setInput(e.target.value) }
 							onKeyDown={ _handleChange }
