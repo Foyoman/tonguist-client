@@ -298,7 +298,7 @@ export default function Dashboard() {
 			<h3 id='welcome-back' style={{ margin: '0', textAlign: 'center' }}>
 				<strong>Welcome back, {name}</strong>
 			</h3>
-			<Card className='dash-card'>
+			<Card className='dash-card' id='learn-card'>
 				<div id='language-learning'>
 					<ButtonGroup
 						style={{ width: '100%' }}

@@ -202,6 +202,10 @@ body {
 		color: $purp;
 	}
 
+	#welcome-back {
+		padding: 0.2em;
+	}
+
 	.dash-card {
 		.MuiButtonGroup-root {
 			margin-bottom: 1em;
@@ -337,9 +341,11 @@ button:focus {
 	.dashboard, .profile {
 		padding-bottom: 94px;
 	}
+
 	.dash-card {
-		padding: 2em !important; 
+		padding: 2em; 
 	}
+
 	#welcome-back {
 		font-size: 54px;
 	}
@@ -400,6 +406,10 @@ button:focus {
 @media only screen and (min-width: 700px) {
 	#welcome-back {
 		font-size: 64px !important;
+	}
+
+	#learn-card {
+		padding: 0 2em;
 	}
 
 	#language-learning {
