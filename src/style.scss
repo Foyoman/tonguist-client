@@ -2,11 +2,6 @@ $correct: rgba(37, 154, 104, 0.2);
 $brighterCorrect: rgba(0, 255, 144, 0.8);
 $purp: #ce93d8;
 
-// html, .z-depth-0, .navbar-fixed, .nav-wrapper {
-// 	max-width: 500px;
-// 	margin: 0 auto;
-// }
-
 body {
 	background-color: #121212;
 }
@@ -42,9 +37,6 @@ body {
 @media only screen and (min-width: 500px) {
 	.no-display-mobile {
 		display: none !important;
-	}
-	#bottom-navigation {
-		// display: none !important;
 	}
 }
 
@@ -424,28 +416,29 @@ button:focus {
 	.learn-card {
 		margin-top: 20vh;
 	}
+
 	.whole-phrase {
 		p, input {
 			font-size: 36px !important;
 		}
 	}
+
 	.word-class {
 		font-size: 20px !important;
 	}
+
 	.english-word {
 		font-size: 22px !important;
 	}
+
 	.english-phrase {
 		font-size: 18px !important;
 	}
-	// #new-word, #finished-word {
-	// 	font-size: 18px !important;
-	// }
 }
 
 @media only screen and (min-width: 960px) {
 	.dashboard {
-		padding-top: 4em;
+		padding-top: 2em;
 	}
 }
 
