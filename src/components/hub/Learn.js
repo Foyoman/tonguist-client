@@ -32,7 +32,7 @@ export default function Learn() {
 	const [allLangCards, setAllLangCards] = useState([]);
 	const [allLangDates, setAllLangDates] = useState([]);
 
-	const SERVER_URL = `https://tonguist.herokuapp.com/`;
+	const SERVER_URL = `https://tonguist-server.herokuapp.com/`;
 
 	async function populateDates() {
 		const req = await fetch(SERVER_URL + 'user/dates', {

@@ -22,7 +22,7 @@ const Card = (props) => (
 export default function CardList() {
 	const [cards, setCards] = useState([]);
 
-	const SERVER_URL = 'https://tonguist.herokuapp.com/cards/'
+	const SERVER_URL = 'https://tonguist-server.herokuapp.com/cards/'
 	
 	useEffect(() => {
 		async function getCards() {

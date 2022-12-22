@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function Register() {
 	const navigate = useNavigate();
 
-	const SERVER_URL = `https://tonguist.herokuapp.com/user/register`;
+	const SERVER_URL = `https://tonguist-server.herokuapp.com/user/register`;
 	
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');

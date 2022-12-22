@@ -40,7 +40,7 @@ export default function Profile() {
 				<br />
 				<p>Special thanks also goes out to everyone at General Assembly, Joel, Loden, and to all my classmates from SEI54 for being so cool. </p>
 				<br />
-				<p>King Regards,</p>
+				<p>Kind regards,</p>
 				<p>Ed</p>
 			</Card>
 			<Button onClick={ handleLogOut } variant='contained' color='secondary'>Log Out</Button>

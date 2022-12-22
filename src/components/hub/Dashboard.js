@@ -47,7 +47,7 @@ export default function Dashboard() {
 	const anchorRef = React.useRef(null);
 	const [selectedIndex, setSelectedIndex] = React.useState('');
 
-	const SERVER_URL = `https://tonguist.herokuapp.com/`;
+	const SERVER_URL = `https://tonguist-server.herokuapp.com/`;
 
 	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
