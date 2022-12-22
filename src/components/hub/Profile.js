@@ -13,7 +13,7 @@ export default function Profile() {
       const user = jwt.decode(token);
 			setUser(user);
 		}	
-	}, [localStorage.getItem('token')]);
+	}, []);
 	
 	const handleLogOut = () => {
     localStorage.removeItem('token');

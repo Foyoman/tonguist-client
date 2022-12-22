@@ -195,7 +195,7 @@ export default function Learn() {
 		})));
 
 		return;
-	}, [localStorage.getItem('token')])
+	}, []);
 
 	async function updateCards() {
 		setFirstAttempt(false);

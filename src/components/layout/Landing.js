@@ -21,7 +21,7 @@ const Landing = () => {
         return;
       }
 		}	
-	}, [localStorage.getItem('token')]);
+	}, []);
   
   return (
     <div style={{ height: "75vh" }} className="landing container valign-wrapper">
