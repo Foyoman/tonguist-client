@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken'; 
 import { useNavigate } from 'react-router';
-import _, { set } from 'lodash';
+import _ from 'lodash';
 import '../../style.scss';
 import { Card, Divider } from '@mui/material';
 
@@ -9,7 +9,6 @@ import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
 import NeutralIcon from '@mui/icons-material/Man4';
 import LinearProgress from '@mui/material/LinearProgress';
-
 
 export default function Learn() {
 	const navigate = useNavigate();
@@ -361,7 +360,6 @@ export default function Learn() {
 							id={ correct ? 'correct-input' : 'card-input' }
 							className='card-input'
 							style={{
-								all: 'none', 
 								fontSize: '20px', 
 								height: '1.5em', 
 								width: `${ inputWidth }em`, 

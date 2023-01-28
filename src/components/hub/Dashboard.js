@@ -44,8 +44,9 @@ export default function Dashboard() {
 	const [language, setLanguage] = useState('');
 
 	const [open, setOpen] = React.useState(false);
-	const anchorRef = React.useRef(null);
 	const [selectedIndex, setSelectedIndex] = React.useState('');
+
+	const anchorRef = React.useRef(null);
 
 	const SERVER_URL = `https://tonguist-server.herokuapp.com/`;
 
@@ -125,14 +126,9 @@ export default function Dashboard() {
 
 			setLanguage(language);
 
-			let i;
-			if (language === 'spanish') {
-				i = 0
-			} else {
-				i = 1;
-			}
+			const languages = ['spanish', 'french', 'vietnamese'];
 
-			setSelectedIndex(i);
+			setSelectedIndex(languages.indexOf(language));
 
 			return language;
 		}
@@ -267,7 +263,7 @@ export default function Dashboard() {
 		window.location.reload(false);
 	}
 
-	const options = ['🇪🇸 Spanish', '🇫🇷 French', '🇩🇪 German coming soon'];
+	const options = ['🇪🇸 Spanish', '🇫🇷 French', '🇻🇳 Vietnamese'];
 
 	const handleClick = () => {
 		console.info(`You clicked ${options[selectedIndex]}`);
@@ -347,7 +343,6 @@ export default function Dashboard() {
 											{options.map((option, index) => (
 												<MenuItem
 													key={option}
-													disabled={index === 2}
 													selected={index === selectedIndex}
 													onClick={(event) => handleMenuItemClick(event, index)}
 												>
