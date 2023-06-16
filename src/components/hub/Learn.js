@@ -31,7 +31,7 @@ export default function Learn() {
 	const [allLangCards, setAllLangCards] = useState([]);
 	const [allLangDates, setAllLangDates] = useState([]);
 
-	const SERVER_URL = `https://tonguist-server.herokuapp.com/`;
+	const SERVER_URL = `https://tonguist-server.onrender.com/`;
 
 	async function populateDates() {
 		const req = await fetch(SERVER_URL + 'user/dates', {
@@ -171,7 +171,7 @@ export default function Learn() {
 			const newSampleCard = _.sample(filteredCards);
 
 			setSampleCard(newSampleCard);
-			setInputWidth(newSampleCard.targetWord.length * 0.7);
+			setInputWidth(newSampleCard.targetWord.length * 0.6);
 
 			const selectCard = (
 				(_.filter(cards, (card) => {
@@ -236,7 +236,7 @@ export default function Learn() {
 				setCorrect(false);
 				setInput('');
 				setSampleCard(newCard);
-				setInputWidth(newCard.targetWord.length * 0.7);
+				setInputWidth(newCard.targetWord.length * 0.6);
 				setFinishedCard(false);
 				if (selectCard) {
 					setProgress(selectCard.cardProgress);
@@ -339,8 +339,8 @@ export default function Learn() {
 						<div className={ `stripe ${ finishedCard ? 'finished-stripe' : progress >= 5 && 'checked' }` } />
 
 						<span className='card-status'>
-							{ newCard && <span className='' id='new-word'>New word</span> }
-							{ finishedCard && <span className='' id='finished-word'>Word completed</span> }
+							{ newCard && <span id='new-word'>New word</span> }
+							{ finishedCard && <span id='finished-word'>Word completed</span> }
 						</span>
 					</span>
 				</span>

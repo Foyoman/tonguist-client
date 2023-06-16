@@ -48,7 +48,7 @@ export default function Dashboard() {
 
 	const anchorRef = React.useRef(null);
 
-	const SERVER_URL = `https://tonguist-server.herokuapp.com/`;
+	const SERVER_URL = `https://tonguist-server.onrender.com/`;
 
 	async function populateDates(language) {
 		const req = await fetch(SERVER_URL + 'user/dates', {
