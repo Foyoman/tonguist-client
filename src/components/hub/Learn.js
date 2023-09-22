@@ -9,10 +9,12 @@ import BoyIcon from '@mui/icons-material/Boy';
 import GirlIcon from '@mui/icons-material/Girl';
 import NeutralIcon from '@mui/icons-material/Man4';
 import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Learn() {
 	const navigate = useNavigate();
 
+	const [loaded, setLoaded] = useState(false);
 	const [cards, setCards] = useState([]);
 	const [allCards, setAllCards] = useState([]);
 	const [sampleCard, setSampleCard] = useState({});
@@ -74,7 +76,6 @@ export default function Learn() {
 			alert(data.error)
 		}
 	}
-
 
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
@@ -191,6 +192,7 @@ export default function Learn() {
 			}
 
 			setReadOnly(false);
+			setLoaded(true);
 		})));
 
 		return;
@@ -329,6 +331,7 @@ export default function Learn() {
 
 	return (
 		<div>
+		{ loaded ? 
 			<Card className='container learn-card'>
 				<span style={{ margin: '0', padding: '0', display: 'flex', alignItems: 'center' }}>
 					<span className='stripes'>
@@ -407,6 +410,16 @@ export default function Learn() {
 				</span>
 				<LinearProgress className='progress' color='success' variant="determinate" value={ (cardCount - (Math.floor(cardCount / 50) * 50)) * 2 } />
 			</Card>
+		:
+			<CircularProgress 
+				color="secondary"
+				style={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+				}}
+			/>
+		}
 		</div>
 	)
 }

@@ -9,7 +9,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import LinearProgress from '@mui/material/LinearProgress';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -23,6 +23,7 @@ import MenuList from '@mui/material/MenuList';
 export default function Dashboard() {
 	const navigate = useNavigate();
 
+	const [loaded, setLoaded] = useState(false);
 	const [name, setName] = useState('');
 	const [today, setToday] = useState('');
 	const [todaysProgress, setTodaysProgress] = useState(0);
@@ -123,11 +124,9 @@ export default function Dashboard() {
 			}
 
 			const { language } = await response.json();
-
 			setLanguage(language);
 
 			const languages = ['spanish', 'french', 'vietnamese'];
-
 			setSelectedIndex(languages.indexOf(language));
 
 			return language;
@@ -238,6 +237,7 @@ export default function Dashboard() {
 				setAWeekAgosCount(true);
 			};
 
+			setLoaded(true);
 		}));
 	}, [language]);
 
@@ -290,6 +290,7 @@ export default function Dashboard() {
 	};
 
 	return (
+		loaded ? 
 		<div className='dashboard'>
 			<h3 id='welcome-back' style={{ margin: '0', textAlign: 'center' }}>
 				<strong>Welcome back, {name}</strong>
@@ -431,5 +432,14 @@ export default function Dashboard() {
 				</div>
 			</Card>
 		</div>
+		:
+		<CircularProgress 
+			color="secondary"
+			style={{
+				position: 'absolute',
+				top: '50%',
+				left: '50%',
+			}}
+		/>
 	)
 }
