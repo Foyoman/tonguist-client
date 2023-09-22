@@ -204,7 +204,8 @@ export default function Learn() {
 		let updatedProgress = 1;
 		const noDiacritics = sampleCard.targetWord.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-		if (input.toLowerCase() === noDiacritics.toLowerCase() || input.toLowerCase() === sampleCard.targetWord.toLowerCase()) {
+		const verifiableInput = input.toLowerCase().trim();
+		if (verifiableInput === noDiacritics.toLowerCase() || verifiableInput === sampleCard.targetWord.toLowerCase()) {
 			if (firstAttempt) {
 				setCorrect(true);
 				setProgress(progress + 1);
@@ -260,7 +261,7 @@ export default function Learn() {
 			
 		} 
 
-		if (input.toLowerCase() !== noDiacritics.toLowerCase() && input.toLowerCase() !== sampleCard.targetWord.toLowerCase()) { 
+		if (verifiableInput !== noDiacritics.toLowerCase() && verifiableInput !== sampleCard.targetWord.toLowerCase()) { 
 			setInput('');
 			setProgress(1);
 		}
